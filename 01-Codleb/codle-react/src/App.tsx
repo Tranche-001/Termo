@@ -33,6 +33,7 @@ function App() {
               key={index}
               type="text"
               className="letter-square empty"
+              maxLength={1}
             />
           ))}
 
