@@ -6,6 +6,7 @@ import Reload from "/assets/images/Reload.svg"
 import { Input } from 'postcss';
 
 function App() {
+  const inputs = Array.from({ length: 30 }, (_, i) => i + 1);
 
   return (
     <>
@@ -27,17 +28,14 @@ function App() {
         </div>
 
         <div className="game-screen-container">
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" />
-          <input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" /><input type="text" className="letter-square" />
+          {inputs.map((index) => (
+            <input
+              key={index}
+              type="text"
+              className="letter-square empty"
+            />
+          ))}
+
         </div>
         <div className="keyboard-container">
           {/* Teclado */}

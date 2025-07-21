@@ -69,6 +69,7 @@
     height: var(--square-size);
     text-align: center;
     width: var(--square-size);
+    border-radius: 2px;
     
     /* Font-parameters */
     
@@ -77,12 +78,20 @@
     font-weight: 700;
     font-style: bold;
     font-family: var(--font-monteserrat);
-
+    text-transform: uppercase;
     /*Font-centering*/
 
     text-align: center;
+
+    cursor: pointer;
+
 }
 
+.letter-square.empty {
+    background: #4da38e;
+    border: 0.125em solid #5EC8AE;
+    }
+
 .letter-square:focus {
-    
+    border-bottom: 0.25em solid #5EC8AE;
 }
