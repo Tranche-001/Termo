@@ -1,33 +1,88 @@
+@font-face {
+    font-family: "Monteserrat";
+    src: url("../assets/Montserrat/");
+}
+
 @import "tailwindcss";
 
-.main-container{
+@theme{
+    --font-monteserrat: "Monteserrat", sans-serif;
+}
+
+
+:root {
+    --square-size: 65.82px;
+}
+
+.main-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     background-color: #282828;
-    color: white;
     align-items: center;
 }
 
-.header{
+/* header-section */
+
+.header {
     margin-left: auto;
     margin-top: 15px;
     margin-right: 21px;
+    color: white;
 }
 
-.header > div > span{
+.header>div>span {
     color: #5EC8AE;
 }
 
-.logo-container{
-    display:flex;
+/* logo-section */
+
+.logo-container {
+    display: flex;
     gap: 60px;
 
 }
 
-.logo-text{
-    display:flex;
+.logo-text {
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* game-screen-section */
+
+.game-screen-container {
+    margin-top: 59px;
+
+    display: grid;
+    grid-template-rows: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
+    grid-template-columns: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
+    gap: 17.28px 23.04px;
+}
+
+.letter-square {
+    background: #1D3D35;
+    
+    /* Square-parameters */
+
+    line-height: var(--square-size);
+    height: var(--square-size);
+    text-align: center;
+    width: var(--square-size);
+    
+    /* Font-parameters */
+    
+    color: white;
+    font-size: 40px;
+    font-weight: 700;
+    font-style: bold;
+    font-family: var(--font-monteserrat);
+
+    /*Font-centering*/
+
+    text-align: center;
+}
+
+.letter-square:focus {
+    
+}
