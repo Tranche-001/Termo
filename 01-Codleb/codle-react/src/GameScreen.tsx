@@ -8,7 +8,7 @@ export function GameScreen() {
                     <input
                         key={index}
                         type="text"
-                        className="letter-square empty"
+                        className="letter-square activated"
                         maxLength={1}
                     />
                 ))}
