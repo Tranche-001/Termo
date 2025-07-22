@@ -88,7 +88,9 @@
 
 }
 
-.letter-square.empty {
+
+
+.letter-square.activated {
     background: #4da38e;
     border: 0.125em solid #5EC8AE;
 }
@@ -96,6 +98,9 @@
 .letter-square:focus {
     border-bottom: 0.25em solid #5EC8AE;
 }
+
+
+
 
 /* keyboard-container-section */
 
