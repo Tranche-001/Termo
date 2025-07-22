@@ -5,7 +5,7 @@
 
 @import "tailwindcss";
 
-@theme{
+@theme {
     --font-monteserrat: "Monteserrat", sans-serif;
 }
 
@@ -62,7 +62,7 @@
 
 .letter-square {
     background: #1D3D35;
-    
+
     /* Square-parameters */
 
     line-height: var(--square-size);
@@ -70,9 +70,9 @@
     text-align: center;
     width: var(--square-size);
     border-radius: 2px;
-    
+
     /* Font-parameters */
-    
+
     color: white;
     font-size: 40px;
     font-weight: 700;
@@ -91,8 +91,53 @@
 .letter-square.empty {
     background: #4da38e;
     border: 0.125em solid #5EC8AE;
-    }
+}
 
 .letter-square:focus {
     border-bottom: 0.25em solid #5EC8AE;
+}
+
+/* keyboard-container-section */
+
+.keyboard-container {
+
+    /* size */
+    max-width: 720px;
+    width: 100%;
+
+    /* positioning */
+
+    user-select: none;
+    flex-shrink: 0;
+    padding: 0 0.5em 0.3em 0.5em;
+    margin: 0;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(32, 1fr);
+    grid-gap: 0.25em;
+
+    margin: 0 auto;
+}
+
+.letter-button {
+    touch-action: manipulation;
+    outline: none;
+    background-color: #333;
+    /* display and alignment */
+    grid-column: span 3;
+    display: flex;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8%;
+    /* font */
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 700;
+    font-family: var(--font-monteserrat);
+
+    cursor: pointer;
+    border: none;
+    color: #FAFAFF;
 }

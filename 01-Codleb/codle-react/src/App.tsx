@@ -4,9 +4,20 @@ import Title from "/assets/images/Title.svg";
 import QuestionMark from "/assets/images/QuestionMark.svg";
 import Reload from "/assets/images/Reload.svg"
 import { Input } from 'postcss';
+import { GameScreen } from './GameScreen';
 
 function App() {
-  const inputs = Array.from({ length: 30 }, (_, i) => i + 1);
+
+  const lettersRow1 = Array.from({ length: 26 }, (_, i) =>
+    String.fromCharCode(65 + i)
+  );
+   const lettersRow2 = Array.from({ length: 26 }, (_, i) =>
+    String.fromCharCode(65 + i)
+  );
+   const lettersRow3 = Array.from({ length: 26 }, (_, i) =>
+    String.fromCharCode(65 + i)
+  );
+
 
   return (
     <>
@@ -27,19 +38,19 @@ function App() {
           </button>
         </div>
 
-        <div className="game-screen-container">
-          {inputs.map((index) => (
-            <input
-              key={index}
-              type="text"
-              className="letter-square empty"
-              maxLength={1}
-            />
-          ))}
+        <GameScreen />
 
-        </div>
+
         <div className="keyboard-container">
-          {/* Teclado */}
+          {lettersRow1.map((letter) => (
+          <button
+          key={letter}
+          id={`button-${letter}`}
+          className='letter-button'>
+
+            {letter}
+          </button>
+        ))}
         </div>
       </div>
     </>
