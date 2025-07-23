@@ -86,6 +86,8 @@
     cursor: pointer;
     caret-color: transparent;
 
+    border-style: none;
+    pointer-events: none;
 }
 
 
@@ -93,9 +95,21 @@
 .letter-square.activated {
     background: #4da38e;
     border: 0.125em solid #5EC8AE;
+    pointer-events: all;
 }
 
-.letter-square:focus {
+.letter-square.unbelonging-letter{
+
+}
+.letter-square.wrong-position{
+
+}
+.letter-square.right-position{
+
+}
+
+
+.letter-square.activated:focus {
     border-bottom: 0.25em solid #5EC8AE;
 }
 
