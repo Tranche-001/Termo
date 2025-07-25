@@ -111,6 +111,7 @@
 
 .letter-square.activated:focus {
     border-bottom: 0.25em solid #5EC8AE;
+    outline: none;
 }
 
 
