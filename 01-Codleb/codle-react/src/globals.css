@@ -60,6 +60,13 @@
     gap: 17.28px 23.04px;
 }
 
+.game-screen-row{
+  display: grid;
+  grid-template-rows: var(--square-size);
+  grid-template-columns: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
+  gap: 17.28px 23.04px;
+}
+
 .letter-square {
     background: #1D3D35;
 
