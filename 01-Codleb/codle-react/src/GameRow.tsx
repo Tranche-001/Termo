@@ -11,7 +11,7 @@ const GameRow = () => {
     const newLetter = e.target.value;
     console.log(newLetter)
     setLetters(prevLetters => {
-      let newLetters = prevLetters;
+      let newLetters = [...prevLetters];
       newLetters[index] = newLetter;
       return newLetters;
     })
