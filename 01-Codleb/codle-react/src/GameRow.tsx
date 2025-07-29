@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 const GameRow = () => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
+  const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
 
   const inputRefs = useRef<HTMLDivElement>(null);
 
@@ -16,17 +17,17 @@ const GameRow = () => {
       newLetters[index] = newLetter;
       return newLetters;
     })
-
-    if (newLetter != '') {
-      console.log("entrei")
-      jumptToNextLetter(index);
-    }
-
-
+    setLastEditedIndex(index)
   }
 
+  useEffect(() => {
+    if (lastEditedIndex !== null && letters[lastEditedIndex] !== "") {
+      jumptToNextLetter(lastEditedIndex);
+    }
+  }, [letters, lastEditedIndex]);
+
+
   function jumptToNextLetter(index: number) {
-    // no caso de nodes precisamos de uma lista de 0 a 4
     const listNodes = inputRefs.current;
     // lida com o caso null
     if (!listNodes) {
@@ -45,7 +46,7 @@ const GameRow = () => {
 
   }
 
-// Goes to the end of the input when focusing
+  // Goes to the end of the input when focusing
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     setTimeout(() => {
       e.target.setSelectionRange(
@@ -67,7 +68,7 @@ const GameRow = () => {
             maxLength={1}
             value={letters[index]}
             onChange={e => handleLetterChangeOnWord(e, index)}
-            onFocus={handleFocus }
+            onFocus={handleFocus}
           />
         ))
       }
