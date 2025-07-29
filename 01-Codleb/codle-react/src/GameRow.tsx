@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const GameRow = () => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
@@ -16,13 +16,13 @@ const GameRow = () => {
       newLetters[index] = newLetter;
       return newLetters;
     })
-    
-    if(newLetter!=''){
+
+    if (newLetter != '') {
       console.log("entrei")
       jumptToNextLetter(index);
     }
 
-    
+
   }
 
   function jumptToNextLetter(index: number) {
@@ -34,21 +34,26 @@ const GameRow = () => {
     }
 
     const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
-    let inputNode = inputNodes[index+1];
-    if(index<4){
+    let inputNode = inputNodes[index + 1];
+    if (index < 4) {
       inputNode.focus();
     }
-    else{ 
+    else {
       inputNode = inputNodes[index];
       inputNode.blur();
     }
-   
+
   }
 
-  function goToTheEndOfTheInput(e:any) {
-    e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length);
-  }
-
+// Goes to the end of the input when focusing
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setTimeout(() => {
+      e.target.setSelectionRange(
+        e.target.value.length,
+        e.target.value.length
+      );
+    }, 0);
+  };
 
   return (
 
@@ -62,7 +67,7 @@ const GameRow = () => {
             maxLength={1}
             value={letters[index]}
             onChange={e => handleLetterChangeOnWord(e, index)}
-            onFocus={(e) => goToTheEndOfTheInput(e)}
+            onFocus={handleFocus }
           />
         ))
       }
