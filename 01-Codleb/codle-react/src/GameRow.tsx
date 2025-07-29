@@ -2,7 +2,7 @@
 import React, { useRef, useState } from 'react'
 
 const GameRow = () => {
-  const [letters, setLetters] = useState([""]);
+  const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
   const inputRefs = useRef<HTMLDivElement>(null);
 
@@ -10,13 +10,15 @@ const GameRow = () => {
   function handleLetterChangeOnWord(e: any, index: number) {
     const newLetter = e.target.value;
     console.log(newLetter)
+    console.log(letters)
     setLetters(prevLetters => {
       let newLetters = [...prevLetters];
       newLetters[index] = newLetter;
       return newLetters;
     })
-
+    
     if(newLetter!=''){
+      console.log("entrei")
       jumptToNextLetter(index);
     }
 
@@ -25,7 +27,6 @@ const GameRow = () => {
 
   function jumptToNextLetter(index: number) {
     // no caso de nodes precisamos de uma lista de 0 a 4
-    const newIndex = index - 1;
     const listNodes = inputRefs.current;
     // lida com o caso null
     if (!listNodes) {
@@ -33,24 +34,27 @@ const GameRow = () => {
     }
 
     const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
-    let inputNode = inputNodes[newIndex+1];
-    if(newIndex<4){
+    let inputNode = inputNodes[index+1];
+    if(index<4){
       inputNode.focus();
     }
     else{ 
-      inputNode = inputNodes[newIndex];
+      inputNode = inputNodes[index];
       inputNode.blur();
     }
    
   }
 
+  function goToTheEndOfTheInput(e:any) {
+    e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length);
+  }
 
 
   return (
 
     <>
       <div className='game-screen-row' ref={inputRefs}>{
-        [1, 2, 3, 4, 5].map(index => (
+        [0, 1, 2, 3, 4].map(index => (
           <input
             type="text"
             key={index}
@@ -58,6 +62,7 @@ const GameRow = () => {
             maxLength={1}
             value={letters[index]}
             onChange={e => handleLetterChangeOnWord(e, index)}
+            onFocus={(e) => goToTheEndOfTheInput(e)}
           />
         ))
       }

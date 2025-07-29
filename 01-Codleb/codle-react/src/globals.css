@@ -91,7 +91,7 @@
     text-align: center;
 
     cursor: pointer;
-    caret-color: transparent;
+    /* caret-color: transparent; */
 
     border-style: none;
     pointer-events: none;
