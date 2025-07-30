@@ -9,8 +9,9 @@ interface GameRowProps {
 const GameRow: React.FC<GameRowProps>= ({ status }) => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
+  const [startCorrection, setStartCorrection] = useState<boolean>(false);
 
-  const inputRefs = useRef<HTMLDivElement>(null);
+  const inputRefs = useRef<HTMLFormElement>(null);
   const WORDSIZE = 5;
 
   function handleLetterChangeOnWord(e: React.ChangeEvent<HTMLInputElement>, index: number) {
@@ -35,7 +36,7 @@ const GameRow: React.FC<GameRowProps>= ({ status }) => {
 
   function jumptToNextEmptyLetter(index: number) {
     const listNodes = inputRefs.current;
-    // lida com o caso null
+    // Deals with null case
     if (!listNodes) {
       return;
     }
@@ -62,15 +63,6 @@ const GameRow: React.FC<GameRowProps>= ({ status }) => {
  
   }
 
-  // Goes to the end of the input when focusing
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setTimeout(() => {
-      e.target.setSelectionRange(
-        e.target.value.length,
-        e.target.value.length
-      );
-    }, 0);
-  };
 
   return (
 
@@ -78,9 +70,9 @@ const GameRow: React.FC<GameRowProps>= ({ status }) => {
       <WordInput
         letters={letters}
         handleLetterChangeOnWord={handleLetterChangeOnWord}
-        handleFocus={handleFocus}
         inputRefs = {inputRefs}
         status={status}
+        handleStartCorrection={setStartCorrection}
         />
     </>
   )
