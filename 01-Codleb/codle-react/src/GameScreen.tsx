@@ -8,8 +8,7 @@ export function GameScreen() {
   return (
     <>
       <div className="game-screen-container">
-        <GameRow/>
-        
+        <GameRow status={"activated"}/>
       </div>
     </>
   )
