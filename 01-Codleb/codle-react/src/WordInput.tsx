@@ -31,7 +31,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, handleLetterChangeOnWord
   if (status === "activated") {
     return (
       <>
-        <form action="" className='game-screen-row' ref={inputRefs}>
+        <form action="" className='game-screen-row' ref={inputRefs} onSubmit={(e) => handleSubmit(e)}>
           {
             [0, 1, 2, 3, 4].map(index => (
               <input
@@ -45,7 +45,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, handleLetterChangeOnWord
               />
             ))
           }
-          <button type="submit" onSubmit={(e) => handleSubmit(e)}></button>
+          <button type="submit" ></button>
         </form>
 
       </>)
