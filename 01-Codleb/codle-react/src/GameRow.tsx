@@ -84,7 +84,7 @@ const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidO
       //Lift modal up, HEYYY THIS IS NOT A VALID WORD!
       alert("NOT VALID BRO >:|")
     }
-    
+    setStartCorrection(false);
   }
  
   
