@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import GameRow from "./GameRow";
 
-import data from "./codle-react/assets/data/words.json";
+import data from "../assets/data/words.json";
 export function GameScreen() {
-  //I need a function that every game pulls a random word to be the Game Word so that I can compare with the input
 
+  const [gameWord, setGameWord] = useState<string>("");
 
   // gets a random int number between [min, max] (inclusive)
   const randomNumberInRange = (min: number, max: number) => {
@@ -12,14 +12,22 @@ export function GameScreen() {
       * (max - min + 1)) + min;
   };
 
+
   function getRandomWord() {
-    const randomNum = randomNumberInRange(0, data.length - 1)
-    data.words[10];
+    const randomIndex = randomNumberInRange(0, data.words.length - 1)
+    return data.words[randomIndex];
   }
+
+  useEffect(() => {
+    const newGameWord = getRandomWord();
+    setGameWord(newGameWord);
+  }, [])
+
 
   return (
     <>
       <div className="game-screen-container">
+        <h2>Word is {gameWord}</h2>
         <GameRow status={"activated"} />
       </div>
     </>
