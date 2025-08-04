@@ -10,7 +10,7 @@ interface WordInputProps {
 
 const WordInput: React.FC<WordInputProps> = ({ letters, handleLetterChangeOnWord, inputRefs, status, handleStartCorrection }) => {
   // when submiting we begin the process of correction on GameRow
-  function handleSubmit(e: React.FormEvent<HTMLButtonElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     handleStartCorrection(true);
   }

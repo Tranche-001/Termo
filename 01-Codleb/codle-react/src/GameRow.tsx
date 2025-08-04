@@ -10,6 +10,11 @@ interface GameRowProps {
 
 const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidOnDataSet}) => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
+
+  //Each index can receive one of the three values: wrong-position, right-position, wrong-letter.
+  const [lettersStatus, setLettersStatus] = useState<string[]>(["", "", "", "", ""])
+
+
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
   const [startCorrection, setStartCorrection] = useState<boolean>(false);
 
@@ -66,11 +71,18 @@ const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidO
  
   }
 
+
+  function seeIfAWordIsCorrect() {
+    for(let i=0; i<WORDSIZE; i++){
+
+    }
+  }
+
+
   
   if(startCorrection){
   //Verify if the word exists
     const word = letters.join("");
-    console.log('Entrei no Start Correction');
     if(seeIfWordIsValidOnDataSet(word)){
       console.log('Entrei no seeIfWordISValidOnDataSet');
       //Start Correction Function
