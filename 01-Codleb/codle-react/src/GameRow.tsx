@@ -8,7 +8,7 @@ interface GameRowProps {
   seeIfWordIsValidOnDataSet: (word: string) => boolean
 }
 
-const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidOnDataSet}) => {
+const GameRow: React.FC<GameRowProps> = ({ status, correctWord, seeIfWordIsValidOnDataSet }) => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
   //Each index can receive one of the three values: wrong-position, right-position, wrong-letter.
@@ -17,6 +17,9 @@ const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidO
 
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
   const [startCorrection, setStartCorrection] = useState<boolean>(false);
+
+
+  let print = "input";
 
   const inputRefs = useRef<HTMLFormElement>(null);
   const WORDSIZE = 5;
@@ -40,7 +43,7 @@ const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidO
     }
   }, [letters, lastEditedIndex]);
 
-// When there is no other empty letter to focus, it will also focus automatically to the invisible button 
+  // When there is no other empty letter to focus, it will also focus automatically to the invisible button 
   function jumptToNextEmptyLetter(index: number) {
     const listNodes = inputRefs.current;
     // Deals with null case
@@ -50,47 +53,73 @@ const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidO
 
     const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
     const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
-    
+
     let inputNode = null;
     // search for the next empty letter
     // Why i%WORDSIZE?, because I want to cycle through the Array, starting from the index next to the last filled
     // and then going until it stops right before the last filled
     let flagLetterIsEmpty = false;
-    for(let i=index+1; i<index+5; i++){
-      if(inputNodes[i%WORDSIZE].value===""){
+    for (let i = index + 1; i < index + 5; i++) {
+      if (inputNodes[i % WORDSIZE].value === "") {
         flagLetterIsEmpty = true;
-        inputNode = inputNodes[i%WORDSIZE];
+        inputNode = inputNodes[i % WORDSIZE];
         inputNode.focus();
         break;
       }
     }
-    if(!flagLetterIsEmpty){
+    if (!flagLetterIsEmpty) {
       inputNode = inputNodes[index];
       buttonNode?.focus();
     }
- 
+
   }
 
 
   function seeIfAWordIsCorrect() {
-    for(let i=0; i<WORDSIZE; i++){
+    setLettersStatus(prevStatus => {
+      let newStatus = [...prevStatus]
 
+      // If the letter at index i doesn't match any letters in the correct word:
+      // - Status is "wrong"
+      // If the letter exists in the correct word but at a different index:
+      // - Status is "wrong-position"
+      // If the letter matches both in value and position:
+      // - Status is "right-position"
+      // By prioritizing the last condition (breaking early when a match is found), we ensure that:
+      // - "right-position" takes precedence over "wrong-position"
+      // - "wrong-position" will never incorrectly override "right-position"
+
+      for (let i = 0; i < WORDSIZE; i++) {
+        for (let j = 0; j < WORDSIZE; j++) {
+          if (letters[i] === correctWord[j]) {
+            if (i == j) {
+              newStatus[i] = "right-position";
+              break;
+            }
+            else {
+              newStatus[i] = "wrong-position";
+            }
+          }
+          else {
+            newStatus[i] = "wrong-letter";
+          }
+        }
+      }
+      return newStatus;
     }
+    )
   }
 
 
-  
-  if(startCorrection){
-  //Verify if the word exists
+
+
+  if (startCorrection) {
+    //Verify if the word exists
     const word = letters.join("");
-    if(seeIfWordIsValidOnDataSet(word)){
+    if (seeIfWordIsValidOnDataSet(word)) {
       console.log('Entrei no seeIfWordISValidOnDataSet');
-      //Start Correction Function
-      //Which must return an array that tells me if the letter on index i is
-      // correct
-      // wrong
-      // out of position
-      // This array then will set a Flag up that will render WordCorrectness and close WordInput
+      seeIfAWordIsCorrect();
+
     }
     else {
       //Lift modal up, HEYYY THIS IS NOT A VALID WORD!
@@ -98,8 +127,9 @@ const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidO
     }
     setStartCorrection(false);
   }
- 
-  
+
+
+
 
 
   return (
@@ -108,10 +138,10 @@ const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidO
       <WordInput
         letters={letters}
         handleLetterChangeOnWord={handleLetterChangeOnWord}
-        inputRefs = {inputRefs}
+        inputRefs={inputRefs}
         status={status}
         handleStartCorrection={setStartCorrection}
-        />
+      />
     </>
   )
 }
