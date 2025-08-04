@@ -3,10 +3,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import WordInput from './WordInput';
 
 interface GameRowProps {
-  status: string
+  status: string,
+  correctWord: string,
+  seeIfWordIsValidOnDataSet: (word: string) => boolean
 }
 
-const GameRow: React.FC<GameRowProps>= ({ status }) => {
+const GameRow: React.FC<GameRowProps>= ({ status, correctWord, seeIfWordIsValidOnDataSet}) => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
   const [startCorrection, setStartCorrection] = useState<boolean>(false);
@@ -33,7 +35,7 @@ const GameRow: React.FC<GameRowProps>= ({ status }) => {
     }
   }, [letters, lastEditedIndex]);
 
-
+// When there is no other empty letter to focus, it will also focus automatically to the invisible button 
   function jumptToNextEmptyLetter(index: number) {
     const listNodes = inputRefs.current;
     // Deals with null case
@@ -42,6 +44,7 @@ const GameRow: React.FC<GameRowProps>= ({ status }) => {
     }
 
     const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
+    const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
     
     let inputNode = null;
     // search for the next empty letter
@@ -58,19 +61,33 @@ const GameRow: React.FC<GameRowProps>= ({ status }) => {
     }
     if(!flagLetterIsEmpty){
       inputNode = inputNodes[index];
-      inputNode.blur();
+      buttonNode?.focus();
     }
  
   }
 
-
-  // if(startCorrection){
-  //   for(let i=0; i<5; i++){
-  //     if(letters[i]===){
-        
-  //     }
-  //   }
-  // }
+  
+  if(startCorrection){
+  //Verify if the word exists
+    const word = letters.join("");
+    console.log('Entrei no Start Correction');
+    if(seeIfWordIsValidOnDataSet(word)){
+      console.log('Entrei no seeIfWordISValidOnDataSet');
+      //Start Correction Function
+      //Which must return an array that tells me if the letter on index i is
+      // correct
+      // wrong
+      // out of position
+      // This array then will set a Flag up that will render WordCorrectness and close WordInput
+    }
+    else {
+      //Lift modal up, HEYYY THIS IS NOT A VALID WORD!
+      alert("NOT VALID BRO >:|")
+    }
+    
+  }
+ 
+  
 
 
   return (

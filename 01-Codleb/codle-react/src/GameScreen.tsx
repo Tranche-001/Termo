@@ -24,11 +24,21 @@ export function GameScreen() {
   }, [])
 
 
+  function seeIfWordIsValidOnDataSet(word: string) {
+    let isWordValid = false;
+    for(let i=0; i<data.words.length-1; i++){
+      if(word === data.words[i]){
+        isWordValid = true;
+      }
+    }
+    return isWordValid;
+  }
+
+
   return (
     <>
       <div className="game-screen-container">
-        <h2>Word is {gameWord}</h2>
-        <GameRow status={"activated"} />
+        <GameRow status={"activated"} correctWord = {gameWord} seeIfWordIsValidOnDataSet = {seeIfWordIsValidOnDataSet} />
       </div>
     </>
   )
