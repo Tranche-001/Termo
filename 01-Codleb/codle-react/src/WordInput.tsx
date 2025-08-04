@@ -4,33 +4,34 @@ interface WordInputProps {
   handleLetterChangeOnWord: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void;
   inputRefs: React.RefObject<HTMLFormElement | null>;
   status: string
-  handleStartCorrection: React.Dispatch<React.SetStateAction<boolean>>; 
+  handleStartCorrection: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
 const WordInput: React.FC<WordInputProps> = ({ letters, handleLetterChangeOnWord, inputRefs, status, handleStartCorrection }) => {
   // when submiting we begin the process of correction on GameRow
-  function handleSubmit() {
+  function handleSubmit(e: React.FormEvent<HTMLButtonElement>) {
+    e.preventDefault();
     handleStartCorrection(true);
   }
 
 
-    // Goes to the end of the input when focusing
-    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      setTimeout(() => {
-        e.target.setSelectionRange(
-          e.target.value.length,
-          e.target.value.length
-        );
-      }, 0);
-    };
+  // Goes to the end of the input when focusing
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setTimeout(() => {
+      e.target.setSelectionRange(
+        e.target.value.length,
+        e.target.value.length
+      );
+    }, 0);
+  };
 
-  
-  
+
+
   if (status === "activated") {
     return (
       <>
-        <form action="" className='game-screen-row'  ref={inputRefs}>
+        <form action="" className='game-screen-row' ref={inputRefs}>
           {
             [0, 1, 2, 3, 4].map(index => (
               <input
@@ -44,9 +45,9 @@ const WordInput: React.FC<WordInputProps> = ({ letters, handleLetterChangeOnWord
               />
             ))
           }
-        <button type="submit" onSubmit={handleSubmit}></button>
+          <button type="submit" onSubmit={(e) => handleSubmit(e)}></button>
         </form>
-        
+
       </>)
   }
 

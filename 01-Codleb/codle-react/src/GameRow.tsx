@@ -64,6 +64,15 @@ const GameRow: React.FC<GameRowProps>= ({ status }) => {
   }
 
 
+  // if(startCorrection){
+  //   for(let i=0; i<5; i++){
+  //     if(letters[i]===){
+        
+  //     }
+  //   }
+  // }
+
+
   return (
 
     <>
