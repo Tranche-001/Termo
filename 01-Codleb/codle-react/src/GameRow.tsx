@@ -12,7 +12,7 @@ interface GameRowProps {
 const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet }) => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
-  //Each index can receive one of the three values: wrong-position, right-position, wrong-letter.
+  //Each index can receive one of the three values: wrong-position, right-position, absent-letter.
   const [lettersStatus, setLettersStatus] = useState<string[]>(["", "", "", "", ""])
 
 
@@ -103,7 +103,7 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
             }
           }
           else {
-            newStatus[i] = "wrong-letter";
+            newStatus[i] = "absent-letter";
           }
         }
       }

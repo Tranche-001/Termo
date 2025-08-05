@@ -105,13 +105,16 @@
     pointer-events: all;
 }
 
-.letter-square.unbelonging-letter{
+.letter-square.absent-letter{
 
 }
 .letter-square.wrong-position{
 
 }
 .letter-square.right-position{
+    background: #4da38e;
+    border: 0.125em solid #5EC8AE;
+    pointer-events: all;
 
 }
 
