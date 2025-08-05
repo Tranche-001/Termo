@@ -1,14 +1,15 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import WordInput from './WordInput';
+import WordCorrectness from './WordCorrectness';
 
 interface GameRowProps {
-  status: string,
+  rowStatus: string,
   correctWord: string,
   seeIfWordIsValidOnDataSet: (word: string) => boolean
 }
 
-const GameRow: React.FC<GameRowProps> = ({ status, correctWord, seeIfWordIsValidOnDataSet }) => {
+const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet }) => {
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
   //Each index can receive one of the three values: wrong-position, right-position, wrong-letter.
@@ -18,8 +19,9 @@ const GameRow: React.FC<GameRowProps> = ({ status, correctWord, seeIfWordIsValid
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
   const [startCorrection, setStartCorrection] = useState<boolean>(false);
 
-
-  let print = "input";
+  //this serves to determine if we are going to print the input or the word already corrected on the row.
+  const [print, setPrint] = useState<string>("input");
+  
 
   const inputRefs = useRef<HTMLFormElement>(null);
   const WORDSIZE = 5;
@@ -108,6 +110,8 @@ const GameRow: React.FC<GameRowProps> = ({ status, correctWord, seeIfWordIsValid
       return newStatus;
     }
     )
+
+    setPrint("correctness")
   }
 
 
@@ -131,19 +135,24 @@ const GameRow: React.FC<GameRowProps> = ({ status, correctWord, seeIfWordIsValid
 
 
 
+  if (print == "input") {
+    return (
+      <>
+        <WordInput
+          letters={letters}
+          handleLetterChangeOnWord={handleLetterChangeOnWord}
+          inputRefs={inputRefs}
+          status={rowStatus}
+          handleStartCorrection={setStartCorrection}
+        />
+      </>
+    )
+  }
 
-  return (
+  else if (print == "correctness") {
+    <WordCorrectness word={letters} correctedSequence = {lettersStatus} />
+  }
 
-    <>
-      <WordInput
-        letters={letters}
-        handleLetterChangeOnWord={handleLetterChangeOnWord}
-        inputRefs={inputRefs}
-        status={status}
-        handleStartCorrection={setStartCorrection}
-      />
-    </>
-  )
 }
 
 export default GameRow

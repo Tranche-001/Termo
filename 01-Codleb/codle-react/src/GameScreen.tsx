@@ -39,7 +39,7 @@ export function GameScreen() {
   return (
     <>
       <div className="game-screen-container">
-        <GameRow status={"activated"} correctWord = {gameWord} seeIfWordIsValidOnDataSet = {seeIfWordIsValidOnDataSet} />
+        <GameRow rowStatus={"activated"} correctWord = {gameWord} seeIfWordIsValidOnDataSet = {seeIfWordIsValidOnDataSet} />
       </div>
     </>
   )
