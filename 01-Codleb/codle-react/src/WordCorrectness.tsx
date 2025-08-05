@@ -20,7 +20,16 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ word, correctedSequen
             />
           )
         }
-        else if (correctedSequence[])
+        else if (correctedSequence[index] == "wrong-position") {
+          return (
+            <input
+              type="text"
+              key={index}
+              className="letter-square"
+              maxLength={1}
+            />
+          )
+        }
 
       }
 
