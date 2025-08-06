@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 interface WordInputProps {
   letters: string[];
   status: string
-  handleStartCorrection: React.Dispatch<React.SetStateAction<boolean>>;
+  handleStartCorrection: React.Dispatch<React.SetStateAction<void>>;
   setLetters:  React.Dispatch<React.SetStateAction<string[]>>;
 }
 
@@ -14,7 +14,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   // when submiting we begin the process of correction on GameRow
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    handleStartCorrection(true);
+    handleStartCorrection();
   }
 
   function handleLetterChangeOnWord(e: React.ChangeEvent<HTMLInputElement>, index: number) {

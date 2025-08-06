@@ -48,20 +48,6 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
     }
     
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <>
       <form className='game-screen-row' action="">
