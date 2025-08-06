@@ -3,12 +3,10 @@ import React, { useState } from 'react'
 interface WordCorrectnessProps {
   letters: string[];
   correctWord: string;
-  seeIfWordIsValidOnDataSet: (word: string) => boolean
-
 }
 
 
-const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord, seeIfWordIsValidOnDataSet }) => {
+const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord }) => {
   const WORDSIZE = 5;
 
   //Each index can receive one of the three values: wrong-position, right-position, absent-letter.
@@ -55,13 +53,10 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
           [0, 1, 2, 3, 4].map(index => {
             if (lettersStatus[index] == "right-position") {
               return (
-                <input
-                  type="text"
+                <div
                   key={index}
                   className="letter-square right-position"
-                  maxLength={1}
-                  defaultValue={letters[index]}
-                />
+                >{letters[index]}</div>
               )
             }
             else if (lettersStatus[index] == "wrong-position") {
