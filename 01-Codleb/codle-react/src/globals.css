@@ -1,66 +1,66 @@
 @font-face {
-    font-family: "Monteserrat";
-    src: url("../assets/Montserrat/");
+  font-family: "Monteserrat";
+  src: url("../assets/Montserrat/");
 }
 
 @import "tailwindcss";
 
 @theme {
-    --font-monteserrat: "Monteserrat", sans-serif;
+  --font-monteserrat: "Monteserrat", sans-serif;
 }
 
 
 :root {
-    --square-size: 65.82px;
+  --square-size: 65.82px;
 }
 
 .main-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #282828;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #282828;
+  align-items: center;
 }
 
 /* header-section */
 
 .header {
-    margin-left: auto;
-    margin-top: 15px;
-    margin-right: 21px;
-    color: white;
+  margin-left: auto;
+  margin-top: 15px;
+  margin-right: 21px;
+  color: white;
 }
 
 .header>div>span {
-    color: #5EC8AE;
+  color: #5EC8AE;
 }
 
 /* logo-section */
 
 .logo-container {
-    display: flex;
-    gap: 60px;
+  display: flex;
+  gap: 60px;
 
 }
 
 .logo-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* game-screen-section */
 
 .game-screen-container {
-    margin-top: 59px;
+  margin-top: 59px;
 
-    display: grid;
-    grid-template-rows: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
-    grid-template-columns: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
-    gap: 17.28px 23.04px;
+  display: grid;
+  grid-template-rows: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
+  grid-template-columns: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
+  gap: 17.28px 23.04px;
 }
 
-.game-screen-row{
+.game-screen-row {
   display: grid;
   grid-template-rows: var(--square-size);
   grid-template-columns: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
@@ -68,60 +68,64 @@
 }
 
 .letter-square {
-    background: #1D3D35;
+  background: #1D3D35;
 
-    /* Square-parameters */
+  /* Square-parameters */
 
-    line-height: var(--square-size);
-    height: var(--square-size);
-    text-align: center;
-    width: var(--square-size);
-    border-radius: 2px;
+  line-height: var(--square-size);
+  height: var(--square-size);
+  text-align: center;
+  width: var(--square-size);
+  border-radius: 2px;
 
-    /* Font-parameters */
+  /* Font-parameters */
 
-    color: white;
-    font-size: 40px;
-    font-weight: 700;
-    font-style: bold;
-    font-family: var(--font-monteserrat);
-    text-transform: uppercase;
-    /*Font-centering*/
+  color: white;
+  font-size: 40px;
+  font-weight: 700;
+  font-style: bold;
+  font-family: var(--font-monteserrat);
+  text-transform: uppercase;
+  /*Font-centering*/
 
-    text-align: center;
+  text-align: center;
 
-    cursor: pointer;
-    caret-color: transparent;
+  cursor: pointer;
+  caret-color: transparent;
 
-    border-style: none;
-    pointer-events: none;
+  border-style: none;
+  pointer-events: none;
 }
 
 
 
 .letter-square.activated {
-    background: #4da38e;
-    border: 0.125em solid #5EC8AE;
-    pointer-events: all;
+  background: #4da38e;
+  border: 0.125em solid #5EC8AE;
+  pointer-events: all;
 }
 
-.letter-square.absent-letter{
+.letter-square.absent-letter {
+  background: #404040;
+
+
 
 }
-.letter-square.wrong-position{
+
+.letter-square.right-position {
+  background: #357465;
 
 }
-.letter-square.right-position{
-    background: #4da38e;
-    border: 0.125em solid #5EC8AE;
-    pointer-events: all;
+
+.letter-square.wrong-position {
+  background: #8B8F4D;
 
 }
 
 
 .letter-square.activated:focus {
-    border-bottom: 0.25em solid #5EC8AE;
-    outline: none;
+  border-bottom: 0.25em solid #5EC8AE;
+  outline: none;
 }
 
 
@@ -131,43 +135,43 @@
 
 .keyboard-container {
 
-    /* size */
-    max-width: 720px;
-    width: 100%;
+  /* size */
+  max-width: 720px;
+  width: 100%;
 
-    /* positioning */
+  /* positioning */
 
-    user-select: none;
-    flex-shrink: 0;
-    padding: 0 0.5em 0.3em 0.5em;
-    margin: 0;
-    box-sizing: border-box;
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-columns: repeat(32, 1fr);
-    grid-gap: 0.25em;
+  user-select: none;
+  flex-shrink: 0;
+  padding: 0 0.5em 0.3em 0.5em;
+  margin: 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(32, 1fr);
+  grid-gap: 0.25em;
 
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .letter-button {
-    touch-action: manipulation;
-    outline: none;
-    background-color: #333;
-    /* display and alignment */
-    grid-column: span 3;
-    display: flex;
-    margin: 0;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8%;
-    /* font */
-    font-size: 20px;
-    line-height: 20px;
-    font-weight: 700;
-    font-family: var(--font-monteserrat);
+  touch-action: manipulation;
+  outline: none;
+  background-color: #333;
+  /* display and alignment */
+  grid-column: span 3;
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8%;
+  /* font */
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: 700;
+  font-family: var(--font-monteserrat);
 
-    cursor: pointer;
-    border: none;
-    color: #FAFAFF;
+  cursor: pointer;
+  border: none;
+  color: #FAFAFF;
 }
