@@ -10,6 +10,7 @@ interface GameRowProps {
 }
 
 const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet }) => {
+  //inputed letters
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
   //Each index can receive one of the three values: wrong-position, right-position, absent-letter.
@@ -26,18 +27,7 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
   const inputRefs = useRef<HTMLFormElement>(null);
   const WORDSIZE = 5;
 
-  function handleLetterChangeOnWord(e: React.ChangeEvent<HTMLInputElement>, index: number) {
-    const newLetter = e.target.value;
-
-    setLetters(prevLetters => {
-      let newLetters = [...prevLetters];
-      newLetters[index] = newLetter;
-      return newLetters;
-    })
-    // this will be important to know from where to where we are going to jump when focusing
-    // if the last edited was the 3th one, then jump to the next letter will go to the 4th
-    setLastEditedIndex(index)
-  }
+  
 
   useEffect(() => {
     if (lastEditedIndex !== null && letters[lastEditedIndex] !== "") {
@@ -73,7 +63,6 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
       inputNode = inputNodes[index];
       buttonNode?.focus();
     }
-
   }
 
 
@@ -110,20 +99,17 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
       return newStatus;
     }
     )
-
     setPrint("correctness")
   }
 
 
 
-
+  //Correction logic(Starts when enter is pressed after inputing all letters)
   if (startCorrection) {
     //Verify if the word exists
     const word = letters.join("");
     if (seeIfWordIsValidOnDataSet(word)) {
-      console.log('Entrei no seeIfWordISValidOnDataSet');
       seeIfAWordIsCorrect();
-
     }
     else {
       //Lift modal up, HEYYY THIS IS NOT A VALID WORD!
@@ -140,17 +126,18 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
       <>
         <WordInput
           letters={letters}
-          handleLetterChangeOnWord={handleLetterChangeOnWord}
           inputRefs={inputRefs}
           status={rowStatus}
           handleStartCorrection={setStartCorrection}
+          setLetters = {setLetters}
+          setLastEditedIndex = {setLastEditedIndex}
         />
       </>
     )
   }
 
   else if (print == "correctness") {
-    <WordCorrectness word={letters} correctedSequence = {lettersStatus} />
+   return <WordCorrectness word={letters} correctedSequence = {lettersStatus} />
   }
 
 }

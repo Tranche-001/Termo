@@ -1,19 +1,33 @@
 import React from 'react'
 interface WordInputProps {
   letters: string[];
-  handleLetterChangeOnWord: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void;
   inputRefs: React.RefObject<HTMLFormElement | null>;
   status: string
   handleStartCorrection: React.Dispatch<React.SetStateAction<boolean>>;
+  setLetters:  React.Dispatch<React.SetStateAction<string[]>>;
+  setLastEditedIndex:  React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 
-const WordInput: React.FC<WordInputProps> = ({ letters, handleLetterChangeOnWord, inputRefs, status, handleStartCorrection }) => {
+const WordInput: React.FC<WordInputProps> = ({ letters, inputRefs, status, handleStartCorrection, setLetters, setLastEditedIndex }) => {
   // when submiting we begin the process of correction on GameRow
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     handleStartCorrection(true);
   }
+
+  function handleLetterChangeOnWord(e: React.ChangeEvent<HTMLInputElement>, index: number) {
+      const newLetter = e.target.value;
+  
+      setLetters(prevLetters => {
+        let newLetters = [...prevLetters];
+        newLetters[index] = newLetter;
+        return newLetters;
+      })
+      // this will be important to know from where to where we are going to jump when focusing
+      // if the last edited was the 3th one, then jump to the next letter will go to the 4th
+      setLastEditedIndex(index)
+    }
 
 
   // Goes to the end of the input when focusing
