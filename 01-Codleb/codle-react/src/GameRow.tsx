@@ -18,6 +18,7 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
 
   //Correction logic(Starts when enter is pressed after inputing all letters)
   const word = letters.join("");
+
   function startCorrection(){
     if(seeIfWordIsValidOnDataSet(word)){
       setPrint("correctness");
@@ -41,7 +42,7 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
   }
 
   else if (print == "correctness") {
-    return <WordCorrectness letters={letters} correctWord={correctWord} seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet} />
+    return <WordCorrectness letters={letters} correctWord={correctWord} />
   }
 
 }
