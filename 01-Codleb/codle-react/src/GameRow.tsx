@@ -16,55 +16,12 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
   //Each index can receive one of the three values: wrong-position, right-position, absent-letter.
   const [lettersStatus, setLettersStatus] = useState<string[]>(["", "", "", "", ""])
 
-
-  const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
   const [startCorrection, setStartCorrection] = useState<boolean>(false);
 
   //this serves to determine if we are going to print the input or the word already corrected on the row.
   const [print, setPrint] = useState<string>("input");
   
-
-  const inputRefs = useRef<HTMLFormElement>(null);
   const WORDSIZE = 5;
-
-  
-
-  useEffect(() => {
-    if (lastEditedIndex !== null && letters[lastEditedIndex] !== "") {
-      jumptToNextEmptyLetter(lastEditedIndex);
-    }
-  }, [letters, lastEditedIndex]);
-
-  // When there is no other empty letter to focus, it will also focus automatically to the invisible button 
-  function jumptToNextEmptyLetter(index: number) {
-    const listNodes = inputRefs.current;
-    // Deals with null case
-    if (!listNodes) {
-      return;
-    }
-
-    const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
-    const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
-
-    let inputNode = null;
-    // search for the next empty letter
-    // Why i%WORDSIZE?, because I want to cycle through the Array, starting from the index next to the last filled
-    // and then going until it stops right before the last filled
-    let flagLetterIsEmpty = false;
-    for (let i = index + 1; i < index + 5; i++) {
-      if (inputNodes[i % WORDSIZE].value === "") {
-        flagLetterIsEmpty = true;
-        inputNode = inputNodes[i % WORDSIZE];
-        inputNode.focus();
-        break;
-      }
-    }
-    if (!flagLetterIsEmpty) {
-      inputNode = inputNodes[index];
-      buttonNode?.focus();
-    }
-  }
-
 
   function seeIfAWordIsCorrect() {
     setLettersStatus(prevStatus => {
@@ -126,11 +83,9 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
       <>
         <WordInput
           letters={letters}
-          inputRefs={inputRefs}
           status={rowStatus}
           handleStartCorrection={setStartCorrection}
           setLetters = {setLetters}
-          setLastEditedIndex = {setLastEditedIndex}
         />
       </>
     )
