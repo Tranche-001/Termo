@@ -3,14 +3,14 @@ interface WordInputProps {
   letters: string[];
   status: string
   handleStartCorrection: React.Dispatch<React.SetStateAction<void>>;
-  setLetters:  React.Dispatch<React.SetStateAction<string[]>>;
+  setLetters: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 
 const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorrection, setLetters }) => {
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
-  
-  
+
+
   // when submiting we begin the process of correction on GameRow
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,17 +18,17 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   }
 
   function handleLetterChangeOnWord(e: React.ChangeEvent<HTMLInputElement>, index: number) {
-      const newLetter = e.target.value;
-  
-      setLetters(prevLetters => {
-        let newLetters = [...prevLetters];
-        newLetters[index] = newLetter;
-        return newLetters;
-      })
-      // this will be important to know from where to where we are going to jump when focusing
-      // if the last edited was the 3th one, then jump to the next letter will go to the 4th
-      setLastEditedIndex(index)
-    }
+    const newLetter = e.target.value;
+
+    setLetters(prevLetters => {
+      let newLetters = [...prevLetters];
+      newLetters[index] = newLetter;
+      return newLetters;
+    })
+    // this will be important to know from where to where we are going to jump when focusing
+    // if the last edited was the 3th one, then jump to the next letter will go to the 4th
+    setLastEditedIndex(index)
+  }
 
 
   // Goes to the end of the input when focusing
@@ -42,7 +42,9 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   };
 
 
-  
+
+  // Jump To Next Empty Letter Logic
+
   const inputRefs = useRef<HTMLFormElement>(null);
   const WORDSIZE = 5;
 
@@ -84,6 +86,32 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
 
 
 
+  //Backspace logic
+  //If Input is Empty and you press backspace/delete, it will focus on the previous index.
+  function ifInputIsEmptyGoBackOne(e: any, index: number) {
+    if (e.keyCode == '8' || e.keyCode == '46') {
+      const listNodes = inputRefs.current;
+      // Deals with null case
+      if (!listNodes) {
+        return;
+      }
+
+      const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
+          const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
+
+      // Focus on the previous index if the current focused input is empty and backspace is pressed
+      if (inputNodes[index].value === "" && index - 1 >= 0) {
+        inputNodes[index - 1].focus();
+      }
+      // Basically, if everything is filled, then the button is focused.
+      // So, pressing backspace must lead to last letter.
+      else if(buttonNode === document.activeElement){
+        inputNodes[index].focus()
+      }
+    }
+  }
+
+
 
   if (status === "activated") {
     return (
@@ -99,10 +127,11 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
                 value={letters[index]}
                 onChange={e => handleLetterChangeOnWord(e, index)}
                 onFocus={handleFocus}
+                onKeyDown={e => ifInputIsEmptyGoBackOne(e, index)}
               />
             ))
           }
-          <button type="submit" ></button>
+          <button type="submit" onKeyDown={e => ifInputIsEmptyGoBackOne(e, 4)}></button>
         </form>
 
       </>)
