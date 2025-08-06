@@ -61,25 +61,19 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord 
             }
             else if (lettersStatus[index] == "wrong-position") {
               return (
-                <input
-                  type="text"
+                 <div
                   key={index}
                   className="letter-square wrong-position"
-                  maxLength={1}
-                  defaultValue={letters[index]}
-                />
+                >{letters[index]}</div>
               )
 
             }
             else if (lettersStatus[index] == "absent-letter") {
               return (
-                <input
-                  type="text"
+                <div
                   key={index}
                   className="letter-square absent-letter"
-                  maxLength={1}
-                  defaultValue={letters[index]}
-                />
+                >{letters[index]}</div>
               )
 
             }
