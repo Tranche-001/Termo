@@ -56,7 +56,7 @@
 
   display: grid;
   grid-template-rows: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
-  grid-template-columns: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
+  grid-template-columns: calc(var(--square-size)*5 +5*17.28px);
   gap: 17.28px 23.04px;
 }
 

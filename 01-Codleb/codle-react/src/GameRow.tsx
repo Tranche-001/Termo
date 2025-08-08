@@ -7,9 +7,11 @@ interface GameRowProps {
   rowStatus: string,
   correctWord: string,
   seeIfWordIsValidOnDataSet: (word: string) => boolean
+  setRowStatus: React.Dispatch<React.SetStateAction<string[]>>;
+  
 }
 
-const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet }) => {
+const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet, setRowStatus }) => {
   //inputed letters
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
@@ -42,7 +44,7 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
   }
 
   else if (print == "correctness") {
-    return <WordCorrectness letters={letters} correctWord={correctWord} />
+    return <WordCorrectness letters={letters} correctWord={correctWord} setRowStatus = {setRowStatus} />
   }
 
 }

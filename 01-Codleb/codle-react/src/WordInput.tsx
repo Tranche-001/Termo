@@ -138,6 +138,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
           type="text"
           key={index}
           className="letter-square"
+          ref={el => { inputRefs.current[index] = el; }}
         />
       ))
     }
