@@ -10,20 +10,15 @@ interface WordInputProps {
 const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorrection, setLetters }) => {
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
 
-  const inputRefs = useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const WORDSIZE = 5;
 
-  const listNodes = inputRefs.current;
+  useEffect(() => {
+    inputRefs.current = inputRefs.current.slice(0, WORDSIZE);
+  }, []);
   // Deals with null case
-  if (!listNodes) {
-    return;
-  }
-  const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
-  const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
-
-
-
-
 
   // when submiting we begin the process of correction on GameRow
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -47,12 +42,15 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
 
   // Goes to the end of the input when focusing
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>, index: number) => {
+
+
+
     setTimeout(() => {
       e.target.setSelectionRange(
         e.target.value.length,
         e.target.value.length
       );
-      inputNodes[index].select();
+      inputRefs.current[index]?.select();
     }, 0);
   };
 
@@ -67,7 +65,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
 
   //Focus on the first Letter when Game Start
   useEffect(() => {
-    inputNodes[0].focus();
+    inputRefs.current[0]?.focus();
   }, [])
 
   // When there is no other empty letter to focus, it will also focus automatically to the invisible button 
@@ -78,16 +76,16 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
     // and then going until it stops right before the last filled
     let flagLetterIsEmpty = false;
     for (let i = index + 1; i < index + 5; i++) {
-      if (inputNodes[i % WORDSIZE].value === "") {
+      if (inputRefs.current[i % WORDSIZE]?.value === "") {
         flagLetterIsEmpty = true;
-        inputNode = inputNodes[i % WORDSIZE];
-        inputNode.focus();
+        inputNode = inputRefs.current[i % WORDSIZE];
+        inputNode?.focus();
         break;
       }
     }
     if (!flagLetterIsEmpty) {
-      inputNode = inputNodes[index];
-      buttonNode?.focus();
+      inputNode = inputRefs.current[index];
+      buttonRef.current?.focus();
     }
   }
 
@@ -99,13 +97,13 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
     if (e.keyCode == '8' || e.keyCode == '46') {
 
       // Focus on the previous index if the current focused input is empty and backspace is pressed
-      if (inputNodes[index].value === "" && index - 1 >= 0) {
-        inputNodes[index - 1].focus();
+      if (inputRefs.current[index]?.value === "" && index - 1 >= 0) {
+        inputRefs.current[index - 1]?.focus();
       }
       // Basically, if everything is filled, then the button is focused.
       // So, pressing backspace must lead to last letter.
-      else if (buttonNode === document.activeElement) {
-        inputNodes[index].focus()
+      else if (buttonRef.current === document.activeElement) {
+        inputRefs.current[index]?.focus()
       }
     }
   }
@@ -115,13 +113,14 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   if (status === "activated") {
     return (
       <>
-        <form action="" className='game-screen-row' ref={inputRefs} onSubmit={(e) => handleSubmit(e)}>
+        <form action="" className='game-screen-row' ref={formRef} onSubmit={(e) => handleSubmit(e)}>
           {
             [0, 1, 2, 3, 4].map(index => (
               <input
                 type="text"
                 key={index}
                 className="letter-square activated"
+                ref={el => { inputRefs.current[index] = el; }}
                 maxLength={1}
                 value={letters[index]}
                 onChange={e => handleLetterChangeOnWord(e, index)}
@@ -137,7 +136,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   }
 
   else if (status == "deactivated") {
-    return (<form className='game-screen-row' ref={inputRefs}>{
+    return (<form className='game-screen-row' ref={formRef}>{
       [0, 1, 2, 3, 4].map(index => (
         <input
           type="text"
