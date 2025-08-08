@@ -42,8 +42,9 @@ export function GameScreen() {
   return (
     <>
       <div className="game-screen-container">
+        <GameRow rowStatus={rowStatus[0]} correctWord={gameWord} seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet} setRowStatus={setRowStatus} />
         <GameRow rowStatus={rowStatus[1]} correctWord={gameWord} seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet} setRowStatus={setRowStatus} />
-        <GameRow rowStatus={rowStatus[1]} correctWord={gameWord} seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet} setRowStatus={setRowStatus} />
+        <GameRow rowStatus={rowStatus[2]} correctWord={gameWord} seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet} setRowStatus={setRowStatus} />
       </div>
     </>
   )

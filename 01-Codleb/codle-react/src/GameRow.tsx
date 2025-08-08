@@ -8,7 +8,7 @@ interface GameRowProps {
   correctWord: string,
   seeIfWordIsValidOnDataSet: (word: string) => boolean
   setRowStatus: React.Dispatch<React.SetStateAction<string[]>>;
-  
+
 }
 
 const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet, setRowStatus }) => {
@@ -21,16 +21,29 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
   //Correction logic(Starts when enter is pressed after inputing all letters)
   const word = letters.join("");
 
-  function startCorrection(){
-    if(seeIfWordIsValidOnDataSet(word)){
-      setPrint("correctness");
+  function startCorrection() {
+    if (seeIfWordIsValidOnDataSet(word)) {
+
+      setRowStatus(prevStatus => {
+        let newStatus = [...prevStatus];
+        let statusLength = prevStatus.length;
+        for (let i = 0; i < statusLength - 1; i++) {
+          if (newStatus[i] == "activated") {
+            newStatus[i] = "completed";
+            newStatus[i + 1] = "activated";
+            break;
+          }
+        }
+        console.log(newStatus);
+        return newStatus;
+      })
     }
-    else{
+    else {
       alert("NOT VALID BRO !>:|");
     }
   }
 
-  if (print == "input") {
+  if (rowStatus == "activated") {
     return (
       <>
         <WordInput
@@ -43,8 +56,20 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
     )
   }
 
-  else if (print == "correctness") {
-    return <WordCorrectness letters={letters} correctWord={correctWord} setRowStatus = {setRowStatus} />
+  else if (rowStatus == "completed") {
+    return <WordCorrectness letters={letters} correctWord={correctWord} setRowStatus={setRowStatus} />
+  }
+  else if (rowStatus == "deactivated") {
+    return (<div className='game-screen-row'>{
+      [0, 1, 2, 3, 4].map(index => (
+        <div
+          key={index}
+          className="letter-square"
+        />
+      ))
+    }
+    </div>)
+
   }
 
 }
