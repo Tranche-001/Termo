@@ -44,27 +44,16 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
         }
       }
     }
+  
     return newStatus;
   }
 
-  useEffect(() => {
-    setRowStatus(prevStatus => {
-      let newStatus = [...prevStatus];
-      let statusLength = prevStatus.length;
-      for (let i = 0; i < statusLength - 1; i++) {
-        if (newStatus[i] == "activated") {
-          newStatus[i] = "completed";
-          newStatus[i + 1] = "activated";
-        }
-      }
-      return prevStatus
-    })
-  }, [lettersStatus])
 
+  
 
   return (
     <>
-      <form className='game-screen-row' action="">
+      <div className='game-screen-row'>
         {
           [0, 1, 2, 3, 4].map(index => {
             if (lettersStatus[index] == "right-position") {
@@ -98,7 +87,7 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
 
           )
         }
-      </form>
+      </div>
     </>
   )
 }

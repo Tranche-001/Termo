@@ -131,20 +131,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
       </>)
   }
 
-  else if (status == "deactivated") {
-    return (<form className='game-screen-row' ref={formRef}>{
-      [0, 1, 2, 3, 4].map(index => (
-        <input
-          type="text"
-          key={index}
-          className="letter-square"
-          ref={el => { inputRefs.current[index] = el; }}
-        />
-      ))
-    }
-    </form>)
-
-  }
+  
 
 
 
