@@ -18,7 +18,6 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, WORDSIZE);
   }, []);
-  // Deals with null case
 
   // when submiting we begin the process of correction on GameRow
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -42,9 +41,6 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
 
   // Goes to the end of the input when focusing
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>, index: number) => {
-
-
-
     setTimeout(() => {
       e.target.setSelectionRange(
         e.target.value.length,
@@ -129,7 +125,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
               />
             ))
           }
-          <button type="submit" onKeyDown={e => ifInputIsEmptyGoBackOne(e, 4)}></button>
+          <button type="submit" onKeyDown={e => ifInputIsEmptyGoBackOne(e, 4)} ref={buttonRef}></button>
         </form>
 
       </>)
