@@ -46,12 +46,13 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
 
 
   // Goes to the end of the input when focusing
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>, index: number) => {
     setTimeout(() => {
       e.target.setSelectionRange(
         e.target.value.length,
         e.target.value.length
       );
+      inputNodes[index].select();
     }, 0);
   };
 
@@ -64,12 +65,9 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
     }
   }, [letters, lastEditedIndex]);
 
+  //Focus on the first Letter when Game Start
   useEffect(() => {
-
-
-
     inputNodes[0].focus();
-
   }, [])
 
   // When there is no other empty letter to focus, it will also focus automatically to the invisible button 
@@ -127,7 +125,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
                 maxLength={1}
                 value={letters[index]}
                 onChange={e => handleLetterChangeOnWord(e, index)}
-                onFocus={handleFocus}
+                onFocus={e => handleFocus(e, index)}
                 onKeyDown={e => ifInputIsEmptyGoBackOne(e, index)}
               />
             ))
