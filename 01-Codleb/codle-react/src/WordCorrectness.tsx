@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface WordCorrectnessProps {
   letters: string[];
   correctWord: string;
+  setRowStatus: React.Dispatch<React.SetStateAction<string[]>>;
+
 }
 
 
-const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord }) => {
+const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord, setRowStatus }) => {
   const WORDSIZE = 5;
 
   //Each index can receive one of the three values: wrong-position, right-position, absent-letter.
@@ -44,6 +46,20 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord 
     }
     return newStatus;
   }
+
+  useEffect(() => {
+    setRowStatus(prevStatus => {
+      let newStatus = [...prevStatus];
+      let statusLength = prevStatus.length;
+      for (let i = 0; i < statusLength - 1; i++) {
+        if (newStatus[i] == "activated") {
+          newStatus[i] = "completed";
+          newStatus[i + 1] = "activated";
+        }
+      }
+      return prevStatus
+    })
+  }, [lettersStatus])
 
 
   return (
