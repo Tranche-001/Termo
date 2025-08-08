@@ -104,6 +104,9 @@
   border: 0.125em solid #5EC8AE;
   pointer-events: all;
 }
+.letter-square.activated::selection {
+  background-color: transparent;
+}
 
 .letter-square.absent-letter {
   background: #404040;
