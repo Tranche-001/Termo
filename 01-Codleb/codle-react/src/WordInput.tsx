@@ -10,6 +10,20 @@ interface WordInputProps {
 const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorrection, setLetters }) => {
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
 
+  const inputRefs = useRef<HTMLFormElement>(null);
+  const WORDSIZE = 5;
+
+  const listNodes = inputRefs.current;
+  // Deals with null case
+  if (!listNodes) {
+    return;
+  }
+  const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
+  const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
+
+
+
+
 
   // when submiting we begin the process of correction on GameRow
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -44,27 +58,22 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
 
 
   // Jump To Next Empty Letter Logic
-
-  const inputRefs = useRef<HTMLFormElement>(null);
-  const WORDSIZE = 5;
-
   useEffect(() => {
     if (lastEditedIndex !== null && letters[lastEditedIndex] !== "") {
       jumptToNextEmptyLetter(lastEditedIndex);
     }
   }, [letters, lastEditedIndex]);
 
+  useEffect(() => {
+
+
+
+    inputNodes[0].focus();
+
+  }, [])
+
   // When there is no other empty letter to focus, it will also focus automatically to the invisible button 
   function jumptToNextEmptyLetter(index: number) {
-    const listNodes = inputRefs.current;
-    // Deals with null case
-    if (!listNodes) {
-      return;
-    }
-
-    const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
-    const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
-
     let inputNode = null;
     // search for the next empty letter
     // Why i%WORDSIZE?, because I want to cycle through the Array, starting from the index next to the last filled
@@ -90,14 +99,6 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   //If Input is Empty and you press backspace/delete, it will focus on the previous index.
   function ifInputIsEmptyGoBackOne(e: any, index: number) {
     if (e.keyCode == '8' || e.keyCode == '46') {
-      const listNodes = inputRefs.current;
-      // Deals with null case
-      if (!listNodes) {
-        return;
-      }
-
-      const inputNodes = listNodes.querySelectorAll<HTMLInputElement>('input');
-          const buttonNode = listNodes.querySelector<HTMLButtonElement>('button');
 
       // Focus on the previous index if the current focused input is empty and backspace is pressed
       if (inputNodes[index].value === "" && index - 1 >= 0) {
@@ -105,7 +106,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
       }
       // Basically, if everything is filled, then the button is focused.
       // So, pressing backspace must lead to last letter.
-      else if(buttonNode === document.activeElement){
+      else if (buttonNode === document.activeElement) {
         inputNodes[index].focus()
       }
     }
