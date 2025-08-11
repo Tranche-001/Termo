@@ -27,11 +27,14 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
       setRowStatus(prevStatus => {
         let newStatus = [...prevStatus];
         let statusLength = prevStatus.length;
-        for (let i = 0; i < statusLength - 1; i++) {
+        for (let i = 0; i < statusLength; i++) {
           if (newStatus[i] == "activated") {
             newStatus[i] = "completed";
             newStatus[i + 1] = "activated";
             break;
+          }
+          if( i == statusLength-1){
+            newStatus[i] = "completed";
           }
         }
         console.log(newStatus);
