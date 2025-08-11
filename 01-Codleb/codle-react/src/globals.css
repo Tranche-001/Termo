@@ -53,6 +53,7 @@
 
 .game-screen-container {
   margin-top: 59px;
+  margin-bottom: 40.28px;
 
   display: grid;
   grid-template-rows: var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size) var(--square-size);
