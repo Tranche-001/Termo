@@ -102,11 +102,12 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
       }
       // Basically, if everything is filled, then the button is focused.
       // So, pressing backspace must lead to last letter.
-      // And also close the invalid word Modal if it is on.
       else if (buttonRef.current === document.activeElement) {
         inputRefs.current[index]?.focus()
-        if(isInvalidWordModalOpen)setIsInvalidWordModalOpen(false);
+
       }
+      // And also close the invalid word Modal if it is on.
+      if (isInvalidWordModalOpen) setIsInvalidWordModalOpen(false);
     }
   }
 
@@ -137,7 +138,7 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
       </>)
   }
 
-  
+
 
 
 

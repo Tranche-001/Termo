@@ -187,11 +187,12 @@
 .modal{
   position: absolute;
   margin: 0 auto;
-  top: 130px;
+  top: 125px;
   border-radius: 4px;
-  padding: 0 10px;
+  padding: 4px 4px;
   font-family: sans-serif;
   background-color:#5EC8AE;
+
   color: #ffffff;
 
 }
@@ -202,5 +203,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #357465;
   
 }
