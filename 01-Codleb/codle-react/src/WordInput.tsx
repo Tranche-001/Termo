@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+
+import { useModalContext } from './App.tsx';
 interface WordInputProps {
   letters: string[];
   status: string
@@ -8,6 +10,8 @@ interface WordInputProps {
 
 
 const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorrection, setLetters }) => {
+  const { isInvalidWordModalOpen, setIsInvalidWordModalOpen } = useModalContext();
+
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -92,14 +96,16 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
   function ifInputIsEmptyGoBackOne(e: any, index: number) {
     if (e.keyCode == '8' || e.keyCode == '46') {
 
-      // Focus on the previous index if the current focused input is empty and backspace is pressed
+      // Focus on the previous index, if the current focused input is empty and backspace is pressed
       if (inputRefs.current[index]?.value === "" && index - 1 >= 0) {
         inputRefs.current[index - 1]?.focus();
       }
       // Basically, if everything is filled, then the button is focused.
       // So, pressing backspace must lead to last letter.
+      // And also close the invalid word Modal if it is on.
       else if (buttonRef.current === document.activeElement) {
         inputRefs.current[index]?.focus()
+        if(isInvalidWordModalOpen)setIsInvalidWordModalOpen(false);
       }
     }
   }
