@@ -1,10 +1,11 @@
-import { Letter } from './Letter'
 
 import Title from "/assets/images/Title.svg";
 import QuestionMark from "/assets/images/QuestionMark.svg";
 import Reload from "/assets/images/Reload.svg"
 import { Input } from 'postcss';
 import { GameScreen } from './GameScreen';
+import { useState } from 'react';
+import  Modal  from './Modal.tsx'
 
 function App() {
 
@@ -17,6 +18,9 @@ function App() {
    const lettersRow3 = Array.from({ length: 26 }, (_, i) =>
     String.fromCharCode(65 + i)
   );
+
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean> (false);
 
    
 
@@ -38,6 +42,7 @@ function App() {
             <img src={Reload} alt="" />
           </button>
         </div>
+        {isModalOpen && <Modal isModalOpen= {isModalOpen}/>}
 
         <GameScreen />
 

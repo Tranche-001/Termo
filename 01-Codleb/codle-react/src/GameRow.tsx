@@ -15,11 +15,9 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
   //inputed letters
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
-  //this serves to determine if we are going to print the input or the word already corrected on the row.
-  const [print, setPrint] = useState<string>("input");
-
   //Correction logic(Starts when enter is pressed after inputing all letters)
   const word = letters.join("");
+
 
   function startCorrection() {
     if (seeIfWordIsValidOnDataSet(word)) {
@@ -37,11 +35,12 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
             newStatus[i] = "completed";
           }
         }
-        console.log(newStatus);
         return newStatus;
       })
     }
     else {
+      //Seta modal de palavra invalidas
+      // setIsModalOpen(true);
       alert("NOT VALID BRO !>:|");
     }
   }

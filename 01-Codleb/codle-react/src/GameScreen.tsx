@@ -8,15 +8,15 @@ export function GameScreen() {
 
   const [gameWord, setGameWord] = useState<string>("");
 
-  const [rowStatus, setRowStatus] = useState<string[]>(["activated", "deactivated", "deactivated", "deactivated", "deactivated" , "deactivated"]);
+  const [rowStatus, setRowStatus] = useState<string[]>(["activated", "deactivated", "deactivated", "deactivated", "deactivated", "deactivated"]);
 
-  const [endGame, setEndGame] = useState<boolean>(false)
+  const [endGame, setEndGame] = useState<boolean>(false);
   useEffect(() => {
     let everyRowIsCompleted = true;
     rowStatus.map(row => {
       if (row != "completed") everyRowIsCompleted = false;
     })
-    if(everyRowIsCompleted)setEndGame(true);
+    if (everyRowIsCompleted) setEndGame(true);
   }, [rowStatus])
   // gets a random int number between [min, max] (inclusive)
   const randomNumberInRange = (min: number, max: number) => {
@@ -51,10 +51,14 @@ export function GameScreen() {
       <div className="game-screen-container">
         {
           numOfRows.map(index => {
-            return <GameRow rowStatus={rowStatus[index]} correctWord={gameWord} seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet} setRowStatus={setRowStatus} />
+            return <GameRow rowStatus={rowStatus[index]}
+              correctWord={gameWord}
+              seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet}
+              setRowStatus={setRowStatus}
+              key={index} />
           })
         }
-      
+
       </div>
     </>
   )
