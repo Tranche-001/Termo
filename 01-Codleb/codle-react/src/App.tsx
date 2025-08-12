@@ -6,13 +6,14 @@ import { Input } from 'postcss';
 import { GameScreen } from './GameScreen';
 import { createContext, useContext, useState } from 'react';
 import Modal from './Modal.tsx'
+import EndGameScreen from "./EndGameScreen.tsx";
 
 const ModalContext = createContext<{
   isInvalidWordModalOpen: boolean;
   setIsInvalidWordModalOpen: (value: boolean) => void;
 }>({
   isInvalidWordModalOpen: false,
-  setIsInvalidWordModalOpen: () => {},
+  setIsInvalidWordModalOpen: () => { },
 });
 
 export function useModalContext() {
@@ -34,7 +35,7 @@ function App() {
 
 
   const [isInvalidWordModalOpen, setIsInvalidWordModalOpen] = useState<boolean>(false);
-
+  const [isEndGameModalOpen, setIsEndGameModalOpen] = useState<boolean>(false);
 
 
 
@@ -56,11 +57,15 @@ function App() {
             <img src={Reload} alt="" />
           </button>
         </div>
+        {/* invalid word modal */}
         {isInvalidWordModalOpen && <Modal isInvalidWordModalOpen={isInvalidWordModalOpen} />}
 
-        <ModalContext.Provider value = {{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
+        <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
           <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} />
         </ModalContext.Provider>
+
+        {/* eng game modal */}
+        {isEndGameModalOpen && <EndGameScreen endGameValue={"win"} /> }
 
         <div className="keyboard-container">
           {lettersRow1.map((letter) => (

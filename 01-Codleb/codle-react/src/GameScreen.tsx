@@ -14,6 +14,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
   const [rowStatus, setRowStatus] = useState<string[]>(["activated", "deactivated", "deactivated", "deactivated", "deactivated", "deactivated"]);
 
   const [endGame, setEndGame] = useState<boolean>(false);
+  
   useEffect(() => {
     let everyRowIsCompleted = true;
     rowStatus.map(row => {
