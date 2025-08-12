@@ -8,10 +8,11 @@ interface GameRowProps {
   correctWord: string,
   seeIfWordIsValidOnDataSet: (word: string) => boolean
   setRowStatus: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsInvalidWordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 
 }
 
-const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet, setRowStatus }) => {
+const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsValidOnDataSet, setRowStatus, setIsInvalidWordModalOpen }) => {
   //inputed letters
   const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
 
@@ -31,7 +32,7 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
             newStatus[i + 1] = "activated";
             break;
           }
-          if( i == statusLength-1){
+          if (i == statusLength - 1) {
             newStatus[i] = "completed";
           }
         }
@@ -39,9 +40,8 @@ const GameRow: React.FC<GameRowProps> = ({ rowStatus, correctWord, seeIfWordIsVa
       })
     }
     else {
-      //Seta modal de palavra invalidas
-      // setIsModalOpen(true);
-      alert("NOT VALID BRO !>:|");
+      //if the word is invalid, open the modal
+      setIsInvalidWordModalOpen(true);
     }
   }
 

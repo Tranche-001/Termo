@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import GameRow from "./GameRow";
 
 import data from "../assets/data/words.json";
-export function GameScreen() {
+interface GameScreenProps {
+  setIsInvalidWordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpen }) => {
   const NUM_OF_ROWS = 6;
   const numOfRows = Array.from({ length: NUM_OF_ROWS }, (_, index) => index)
 
@@ -55,7 +58,10 @@ export function GameScreen() {
               correctWord={gameWord}
               seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet}
               setRowStatus={setRowStatus}
-              key={index} />
+              key={index}
+              setIsInvalidWordModalOpen={setIsInvalidWordModalOpen}
+
+            />
           })
         }
 

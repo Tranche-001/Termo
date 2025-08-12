@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 interface ModalProps {
-  isModalOpen: boolean;
+  isInvalidWordModalOpen: boolean;
 }
 
-const Modal: React.FC<ModalProps> = ({ isModalOpen }) => {
+const Modal: React.FC<ModalProps> = ({ isInvalidWordModalOpen }) => {
 
   return (
     <div className='modal'>

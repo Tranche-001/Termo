@@ -4,25 +4,39 @@ import QuestionMark from "/assets/images/QuestionMark.svg";
 import Reload from "/assets/images/Reload.svg"
 import { Input } from 'postcss';
 import { GameScreen } from './GameScreen';
-import { useState } from 'react';
-import  Modal  from './Modal.tsx'
+import { createContext, useContext, useState } from 'react';
+import Modal from './Modal.tsx'
+
+const ModalContext = createContext<{
+  isInvalidWordModalOpen: boolean;
+  setIsInvalidWordModalOpen: (value: boolean) => void;
+}>({
+  isInvalidWordModalOpen: false,
+  setIsInvalidWordModalOpen: () => {},
+});
+
+export function useModalContext() {
+  return useContext(ModalContext);
+}
+
 
 function App() {
 
   const lettersRow1 = Array.from({ length: 26 }, (_, i) =>
     String.fromCharCode(65 + i)
   );
-   const lettersRow2 = Array.from({ length: 26 }, (_, i) =>
+  const lettersRow2 = Array.from({ length: 26 }, (_, i) =>
     String.fromCharCode(65 + i)
   );
-   const lettersRow3 = Array.from({ length: 26 }, (_, i) =>
+  const lettersRow3 = Array.from({ length: 26 }, (_, i) =>
     String.fromCharCode(65 + i)
   );
 
 
-  const [isModalOpen, setIsModalOpen] = useState<boolean> (false);
+  const [isInvalidWordModalOpen, setIsInvalidWordModalOpen] = useState<boolean>(false);
 
-   
+
+
 
   return (
     <>
@@ -42,21 +56,22 @@ function App() {
             <img src={Reload} alt="" />
           </button>
         </div>
-        {isModalOpen && <Modal isModalOpen= {isModalOpen}/>}
+        {isInvalidWordModalOpen && <Modal isInvalidWordModalOpen={isInvalidWordModalOpen} />}
 
-        <GameScreen />
-
+        <ModalContext.Provider value = {{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
+          <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} />
+        </ModalContext.Provider>
 
         <div className="keyboard-container">
           {lettersRow1.map((letter) => (
-          <button
-          key={letter}
-          id={`button-${letter}`}
-          className='letter-button'>
+            <button
+              key={letter}
+              id={`button-${letter}`}
+              className='letter-button'>
 
-            {letter}
-          </button>
-        ))}
+              {letter}
+            </button>
+          ))}
         </div>
       </div>
     </>
