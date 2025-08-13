@@ -1,13 +1,15 @@
 import React from 'react'
 
 interface EngGameScreenProps {
-  endGameValue: string
+  endGameValue: string;
+  isEndGameModalOpen: boolean;
 }
 
-const EndGameScreen: React.FC<EngGameScreenProps>= ({ endGameValue }) => {
+const EndGameScreen: React.FC<EngGameScreenProps>= ({ endGameValue, isEndGameModalOpen}) => {
+    console.log("entrei em endGame " + isEndGameModalOpen);
   if (endGameValue == "win") {
     return (
-      <div>
+      <div className={isEndGameModalOpen ? 'modal fade-in' : 'modal fade-out'}>
         <div>
           You Won!!!!!!!
         </div>
@@ -16,7 +18,7 @@ const EndGameScreen: React.FC<EngGameScreenProps>= ({ endGameValue }) => {
 
   }
   else if (endGameValue == "lose") {
-    <div>
+    <div className={isEndGameModalOpen ? 'modal fade-in' : 'modal fade-out'}>
       <div>
         You LOST!!!!!
       </div>

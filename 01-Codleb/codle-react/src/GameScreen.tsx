@@ -31,6 +31,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
 
   function getRandomWord() {
     const randomIndex = randomNumberInRange(0, data.words.length - 1)
+    console.log(data.words[randomIndex]);
     return data.words[randomIndex];
   }
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useEndGameContext } from './App';
 
 interface WordCorrectnessProps {
   letters: string[];
@@ -9,6 +10,7 @@ interface WordCorrectnessProps {
 
 
 const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord, setRowStatus }) => {
+  const { isEndGameModalOpen, setIsEndGameModalOpen } = useEndGameContext();
   const WORDSIZE = 5;
 
   //Each index can receive one of the three values: wrong-position, right-position, absent-letter.
@@ -52,10 +54,17 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
   function endGameWinning(newStatus: any) {
     let playerWon = true;
     for(let i=0; i<newStatus.length; i++){
-      if(newStatus[i] != "right-position")playerWon=false;
+      if(newStatus[i] != "right-position"){
+        playerWon=false;
+        break;
+      }
     }
 
-    //if(playerWon)
+    if(playerWon){
+      console.log("Venceu porra");
+      console.log("entrei em player won " + isEndGameModalOpen)
+      setIsEndGameModalOpen(true);
+    }
   }
   
 
