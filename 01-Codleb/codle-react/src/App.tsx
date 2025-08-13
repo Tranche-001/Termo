@@ -4,7 +4,7 @@ import QuestionMark from "/assets/images/QuestionMark.svg";
 import Reload from "/assets/images/Reload.svg"
 import { Input } from 'postcss';
 import { GameScreen } from './GameScreen';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import Modal from './Modal.tsx'
 import EndGameScreen from "./EndGameScreen.tsx";
 
@@ -18,6 +18,24 @@ const ModalContext = createContext<{
 
 export function useModalContext() {
   return useContext(ModalContext);
+}
+
+
+
+//Create Delayed
+
+function useDelayedRender(delay: number) {
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+    }, delay);
+
+    return () => clearTimeout(timer); // Critical cleanup
+  }, [delay]);
+
+  return shouldRender;
 }
 
 
@@ -58,14 +76,15 @@ function App() {
           </button>
         </div>
         {/* invalid word modal */}
-        {isInvalidWordModalOpen && <Modal isInvalidWordModalOpen={isInvalidWordModalOpen} />}
+        
+        <Modal isInvalidWordModalOpen={isInvalidWordModalOpen}/>
 
         <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
           <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} />
         </ModalContext.Provider>
 
         {/* eng game modal */}
-        {isEndGameModalOpen && <EndGameScreen endGameValue={"win"} /> }
+        {isEndGameModalOpen && <EndGameScreen endGameValue={"win"} />}
 
         <div className="keyboard-container">
           {lettersRow1.map((letter) => (
