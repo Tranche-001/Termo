@@ -7,7 +7,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isInvalidWordModalOpen }) => {
 
   return (
-    <div className='modal'>
+    <div className = {isInvalidWordModalOpen ? 'modal fade-in' : 'modal fade-out'}>
       <div>
         <div>essa palavra não é aceita</div>
       </div>
