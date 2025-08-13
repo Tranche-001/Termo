@@ -5,7 +5,7 @@ import Reload from "/assets/images/Reload.svg"
 import { Input } from 'postcss';
 import { GameScreen } from './GameScreen';
 import { createContext, useContext, useEffect, useState } from 'react';
-import Modal from './Modal.tsx'
+import Modal from './InvalidWordModal.tsx'
 import EndGameScreen from "./EndGameScreen.tsx";
 
 const ModalContext = createContext<{
@@ -21,22 +21,18 @@ export function useModalContext() {
 }
 
 
+const EndGameContext = createContext<{
+  isEndGameModalOpen: boolean;
+  setIsEndGameModalOpen: (value: boolean) => void;
+}>({
+  isEndGameModalOpen: false,
+  setIsEndGameModalOpen: () => { },
+});
 
-//Create Delayed
-
-function useDelayedRender(delay: number) {
-  const [shouldRender, setShouldRender] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShouldRender(true);
-    }, delay);
-
-    return () => clearTimeout(timer); // Critical cleanup
-  }, [delay]);
-
-  return shouldRender;
+export function useEndGameContext() {
+  return useContext(EndGameContext);
 }
+
 
 
 function App() {
@@ -75,17 +71,18 @@ function App() {
             <img src={Reload} alt="" />
           </button>
         </div>
-        {/* invalid word modal */}
         
-        <Modal isInvalidWordModalOpen={isInvalidWordModalOpen}/>
+        {/* invalid word modal */}
 
-        <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
-          <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} />
-        </ModalContext.Provider>
+        <Modal isInvalidWordModalOpen={isInvalidWordModalOpen} />
+        <EndGameContext.Provider value={{ isEndGameModalOpen, setIsEndGameModalOpen }}>
+          <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
+            <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} />
+          </ModalContext.Provider>
+        </EndGameContext.Provider>
 
         {/* eng game modal */}
-        {isEndGameModalOpen && <EndGameScreen endGameValue={"win"} />}
-
+        <EndGameScreen endGameValue={"win"} isEndGameModalOpen={isEndGameModalOpen} />
         <div className="keyboard-container">
           {lettersRow1.map((letter) => (
             <button

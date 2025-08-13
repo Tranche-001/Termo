@@ -4,7 +4,7 @@ interface ModalProps {
   isInvalidWordModalOpen: boolean;
 }
 
-const Modal: React.FC<ModalProps> = ({ isInvalidWordModalOpen }) => {
+const InvalidWordModal: React.FC<ModalProps> = ({ isInvalidWordModalOpen }) => {
 
   return (
     <div className = {isInvalidWordModalOpen ? 'modal fade-in' : 'modal fade-out'}>
@@ -15,4 +15,4 @@ const Modal: React.FC<ModalProps> = ({ isInvalidWordModalOpen }) => {
   )
 }
 
-export default Modal
+export default InvalidWordModal;
