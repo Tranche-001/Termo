@@ -6,10 +6,9 @@ interface EngGameScreenProps {
 }
 
 const EndGameScreen: React.FC<EngGameScreenProps>= ({ endGameValue, isEndGameModalOpen}) => {
-    console.log("entrei em endGame " + isEndGameModalOpen);
   if (endGameValue == "win") {
     return (
-      <div className={isEndGameModalOpen ? 'modal fade-in' : 'modal fade-out'}>
+      <div className={isEndGameModalOpen ? 'modal endGame fade-in' : 'modal endGame fade-out'}>
         <div>
           You Won!!!!!!!
         </div>

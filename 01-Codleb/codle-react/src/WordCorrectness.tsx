@@ -15,7 +15,10 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
 
   //Each index can receive one of the three values: wrong-position, right-position, absent-letter.
   const lettersStatus = seeIfAWordIsCorrect();
-  endGameWinning(lettersStatus);
+
+  useEffect(() => {
+    endGameWinning(lettersStatus)
+  }, [])
 
   function seeIfAWordIsCorrect() {
 
@@ -61,8 +64,6 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
     }
 
     if(playerWon){
-      console.log("Venceu porra");
-      console.log("entrei em player won " + isEndGameModalOpen)
       setIsEndGameModalOpen(true);
     }
   }
