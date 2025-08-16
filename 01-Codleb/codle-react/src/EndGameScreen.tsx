@@ -12,6 +12,7 @@ const EndGameScreen: React.FC<EngGameScreenProps>= ({ endGameValue, isEndGameMod
         <div>
           You Won!!!!!!!
         </div>
+        <button>Play Again?</button>
       </div>
     )
 
@@ -21,6 +22,7 @@ const EndGameScreen: React.FC<EngGameScreenProps>= ({ endGameValue, isEndGameMod
       <div>
         You LOST!!!!!
       </div>
+      <button>Play Again?</button>
     </div>
   }
 
