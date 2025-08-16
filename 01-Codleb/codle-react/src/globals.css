@@ -105,6 +105,7 @@
   border: 0.125em solid #5EC8AE;
   pointer-events: all;
 }
+
 .letter-square.activated::selection {
   /* background-color: transparent; */
 }
@@ -184,14 +185,14 @@
 
 /* Modal Section */
 
-.modal{
+.modal {
   position: absolute;
   margin: 0 auto;
   top: 125px;
   border-radius: 4px;
   padding: 4px 4px;
   font-family: sans-serif;
-  background-color:#5EC8AE;
+  background-color: #5EC8AE;
   transition: opacity 0.5s ease-in-out;
   color: #ffffff;
 
@@ -204,13 +205,12 @@
   justify-content: center;
   align-items: center;
   background-color: #357465;
-  
 }
 
-.fade-in{
+.fade-in {
   opacity: 1;
 }
 
 .fade-out {
- opacity: 0;
+  opacity: 0;
 }
