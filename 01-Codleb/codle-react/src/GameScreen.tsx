@@ -4,8 +4,9 @@ import GameRow from "./GameRow";
 import data from "../assets/data/words.json";
 interface GameScreenProps {
   setIsInvalidWordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isEndGameModalOpen: boolean;
 }
-export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpen }) => {
+export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpen, isEndGameModalOpen}) => {
   const NUM_OF_ROWS = 6;
   const numOfRows = Array.from({ length: NUM_OF_ROWS }, (_, index) => index)
 
@@ -27,6 +28,20 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
     return Math.floor(Math.random()
       * (max - min + 1)) + min;
   };
+
+  //if the endGame Modal is Open -> set all Rows as completed
+  useEffect(() => {
+    if(isEndGameModalOpen){
+      setRowStatus(prevStatus => {
+        let newStatus = [...prevStatus];
+
+        for(let i=0; i<NUM_OF_ROWS; i++){
+          if(newStatus[i] == "activated")newStatus[i] ="deactivated";
+        }
+        return newStatus;
+      })
+    }
+  }, [isEndGameModalOpen]);
 
 
   function getRandomWord() {
