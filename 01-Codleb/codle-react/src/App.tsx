@@ -77,7 +77,7 @@ function App() {
         <Modal isInvalidWordModalOpen={isInvalidWordModalOpen} />
         <EndGameContext.Provider value={{ isEndGameModalOpen, setIsEndGameModalOpen }}>
           <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
-            <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} />
+            <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} isEndGameModalOpen = {isEndGameModalOpen}/>
           </ModalContext.Provider>
         </EndGameContext.Provider>
 
