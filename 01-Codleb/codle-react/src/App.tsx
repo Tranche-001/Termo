@@ -51,8 +51,8 @@ function App() {
   const [isInvalidWordModalOpen, setIsInvalidWordModalOpen] = useState<boolean>(false);
   const [isEndGameModalOpen, setIsEndGameModalOpen] = useState<boolean>(false);
 
-
-
+  const[tryAgainKey, setTryAgainKey] = useState<number>(0);
+  
   return (
     <>
       <div className='main-container'>
@@ -77,12 +77,12 @@ function App() {
         <Modal isInvalidWordModalOpen={isInvalidWordModalOpen} />
         <EndGameContext.Provider value={{ isEndGameModalOpen, setIsEndGameModalOpen }}>
           <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
-            <GameScreen setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} isEndGameModalOpen = {isEndGameModalOpen}/>
+            <GameScreen key={tryAgainKey} setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} isEndGameModalOpen = {isEndGameModalOpen}/>
           </ModalContext.Provider>
         </EndGameContext.Provider>
 
         {/* eng game modal */}
-        <EndGameScreen endGameValue={"win"} isEndGameModalOpen={isEndGameModalOpen} />
+        <EndGameScreen endGameValue={"win"} isEndGameModalOpen={isEndGameModalOpen} setTryAgainKey={setTryAgainKey} setIsEndGameModalOpen = {setIsEndGameModalOpen} />
         <div className="keyboard-container">
           {lettersRow1.map((letter) => (
             <button
