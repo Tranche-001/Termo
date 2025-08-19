@@ -5,8 +5,10 @@ import data from "../assets/data/words.json";
 interface GameScreenProps {
   setIsInvalidWordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isEndGameModalOpen: boolean;
+  setIsEndGameModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+
 }
-export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpen, isEndGameModalOpen}) => {
+export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpen, isEndGameModalOpen, setIsEndGameModalOpen }) => {
   const NUM_OF_ROWS = 6;
   const numOfRows = Array.from({ length: NUM_OF_ROWS }, (_, index) => index)
 
@@ -14,14 +16,19 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
 
   const [rowStatus, setRowStatus] = useState<string[]>(["activated", "deactivated", "deactivated", "deactivated", "deactivated", "deactivated"]);
 
-  const [endGame, setEndGame] = useState<boolean>(false);
-  
   useEffect(() => {
     let everyRowIsCompleted = true;
     rowStatus.map(row => {
-      if (row != "completed") everyRowIsCompleted = false;
+      console.log(row);
+
+      if (row != "completed") {
+        everyRowIsCompleted = false;
+      }
     })
-    if (everyRowIsCompleted) setEndGame(true);
+    if (everyRowIsCompleted) {
+      console.log("sim");
+      setIsEndGameModalOpen(true);
+    }
   }, [rowStatus])
   // gets a random int number between [min, max] (inclusive)
   const randomNumberInRange = (min: number, max: number) => {
@@ -31,12 +38,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
 
   //if the endGame Modal is Open -> set all Rows as completed
   useEffect(() => {
-    if(isEndGameModalOpen){
+    if (isEndGameModalOpen) {
       setRowStatus(prevStatus => {
         let newStatus = [...prevStatus];
 
-        for(let i=0; i<NUM_OF_ROWS; i++){
-          if(newStatus[i] == "activated")newStatus[i] ="deactivated";
+        for (let i = 0; i < NUM_OF_ROWS; i++) {
+          if (newStatus[i] == "activated") newStatus[i] = "deactivated";
         }
         return newStatus;
       })
