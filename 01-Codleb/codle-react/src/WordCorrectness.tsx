@@ -62,9 +62,8 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
         break;
       }
     }
-
     if(playerWon){
-      setIsEndGameModalOpen(true);
+      setIsEndGameModalOpen([true, "won"]);
     }
   }
   

@@ -8,6 +8,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import Modal from './InvalidWordModal.tsx'
 import EndGameScreen from "./EndGameScreen.tsx";
 
+  type EndGame = [boolean, string];
+
 const ModalContext = createContext<{
   isInvalidWordModalOpen: boolean;
   setIsInvalidWordModalOpen: (value: boolean) => void;
@@ -22,10 +24,10 @@ export function useModalContext() {
 
 
 const EndGameContext = createContext<{
-  isEndGameModalOpen: boolean;
-  setIsEndGameModalOpen: (value: boolean) => void;
+  isEndGameModalOpen: EndGame;
+  setIsEndGameModalOpen: (value: EndGame) => void;
 }>({
-  isEndGameModalOpen: false,
+  isEndGameModalOpen: [false, ""],
   setIsEndGameModalOpen: () => { },
 });
 
@@ -49,7 +51,8 @@ function App() {
 
 
   const [isInvalidWordModalOpen, setIsInvalidWordModalOpen] = useState<boolean>(false);
-  const [isEndGameModalOpen, setIsEndGameModalOpen] = useState<boolean>(false);
+
+  const [isEndGameModalOpen, setIsEndGameModalOpen] = useState<EndGame>([false, ""]);
 
   const[tryAgainKey, setTryAgainKey] = useState<number>(0);
   

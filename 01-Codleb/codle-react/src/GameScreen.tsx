@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import GameRow from "./GameRow";
 
 import data from "../assets/data/words.json";
+type EndGame = [boolean, string];
+
 interface GameScreenProps {
   setIsInvalidWordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isEndGameModalOpen: boolean;
-  setIsEndGameModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isEndGameModalOpen: EndGame;
+  setIsEndGameModalOpen: React.Dispatch<React.SetStateAction<EndGame>>;
 
 }
 export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpen, isEndGameModalOpen, setIsEndGameModalOpen }) => {
@@ -16,20 +18,19 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
 
   const [rowStatus, setRowStatus] = useState<string[]>(["activated", "deactivated", "deactivated", "deactivated", "deactivated", "deactivated"]);
 
+  //If everyRowIscompleted and the modal is not already open -> the player lost the game
   useEffect(() => {
     let everyRowIsCompleted = true;
     rowStatus.map(row => {
-      console.log(row);
-
       if (row != "completed") {
         everyRowIsCompleted = false;
       }
     })
     if (everyRowIsCompleted) {
-      console.log("sim");
-      setIsEndGameModalOpen(true);
+      if (!isEndGameModalOpen[0]) setIsEndGameModalOpen([true, "lost"]);
     }
   }, [rowStatus])
+
   // gets a random int number between [min, max] (inclusive)
   const randomNumberInRange = (min: number, max: number) => {
     return Math.floor(Math.random()
@@ -38,7 +39,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
 
   //if the endGame Modal is Open -> set all Rows as completed
   useEffect(() => {
-    if (isEndGameModalOpen) {
+    if (isEndGameModalOpen[0]) {
       setRowStatus(prevStatus => {
         let newStatus = [...prevStatus];
 
@@ -48,7 +49,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
         return newStatus;
       })
     }
-  }, [isEndGameModalOpen]);
+  }, [isEndGameModalOpen[0]]);
 
 
   function getRandomWord() {
