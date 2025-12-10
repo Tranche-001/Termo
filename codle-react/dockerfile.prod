@@ -1,0 +1,17 @@
+FROM node:latest
+
+WORKDIR /usr/src/app
+
+COPY package* .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 4173
+
+# 2. CMD starts the PREVIEW server.
+# This runs the built files. This needs --host to be visible. 
+CMD ["npm", "run", "preview", "--", "--host"]
