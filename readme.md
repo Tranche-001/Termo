@@ -39,3 +39,5 @@ Interface interativa com as seguintes funcionalidades:
 
 ## 5. Inicializando com Docker
 - docker build -f dockerfile.prod -t wordle . && docker run -it -p 127.0.0.1:4173:4173 wordle
+- You can also access from dockerhub: tranche100/wordle .
+- So running docker run -it -p 127.0.0.1:4173:4173 tranche100/wordle, also works
