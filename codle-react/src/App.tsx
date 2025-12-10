@@ -2,9 +2,8 @@
 import Title from "/assets/images/Title.svg";
 import QuestionMark from "/assets/images/QuestionMark.svg";
 import Reload from "/assets/images/Reload.svg"
-import { Input } from 'postcss';
 import { GameScreen } from './GameScreen';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import Modal from './InvalidWordModal.tsx'
 import EndGameScreen from "./EndGameScreen.tsx";
 
