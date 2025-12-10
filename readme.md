@@ -1,3 +1,5 @@
+** For those from MOOC DOCKER course, this is wordle but in portuguese.
+
 ## 1. O Codle:
 
 O **Codle** é uma releitura do clássico jogo de palavras “Termo”/“Wordle”, em que o usuário tenta adivinhar uma palavra de 5 letras em até 6 tentativas.  
@@ -32,6 +34,8 @@ Interface interativa com as seguintes funcionalidades:
 - SOLID principles
 
 ## 4. Inicializando o projeto
-- npm install /01-Codleb
 - npm install /codle-react
 - npm run dev /codle-react
+
+## 5. Inicializando com Docker
+- docker build -f dockerfile.prod -t wordle . && docker run -it -p 127.0.0.1:4173:4173 wordle
