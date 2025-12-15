@@ -1,0 +1,6 @@
+services:
+  termo:
+    build:
+      dockerfile: ./dockerfile.prod
+    ports:
+     - 4173:4173
