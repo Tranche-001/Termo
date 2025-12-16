@@ -37,6 +37,9 @@ Interface interativa com as seguintes funcionalidades:
 - npm install /codle-react
 - npm run dev /codle-react
 
+# 5. Developing com Docker
+- use 'docker compose -f docker-compose.dev.yaml up'
+
 ## 5. Inicializando com Docker
 - use 'docker compose up' to initialize.
 - or
