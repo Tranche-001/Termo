@@ -21,8 +21,9 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
   }, [])
 
   function seeIfAWordIsCorrect() {
+   
 
-    let newStatus = ["", "", "", "", ""]
+    const newStatus = ["", "", "", "", ""]
 
     // If the letter at index i doesn't match any letters in the correct word:
     // - Status is "wrong"
@@ -37,21 +38,21 @@ const WordCorrectness: React.FC<WordCorrectnessProps> = ({ letters, correctWord,
     for (let i = 0; i < WORDSIZE; i++) {
       for (let j = 0; j < WORDSIZE; j++) {
         if (letters[i] === correctWord[j]) {
+          //If the letters are at least equal, then, at least, it must be wrong-position
+          newStatus[i] = "wrong-position";
+
+          //however if the positions are the same -> right-position and we can skip to next letter
           if (i == j) {
             newStatus[i] = "right-position";
+            console.log(newStatus[i])
             break;
-          }
-          else {
-            newStatus[i] = "wrong-position";
-          }
-        }
-        else {
-          newStatus[i] = "absent-letter";
+          }     
         }
       }
+      //If there is no match -> absent-letter
+      if(newStatus[i]=="")newStatus[i] = "absent-letter";
     }
-  
-    return newStatus;
+      return newStatus;
   }
 
   function seeIfPlayerWon(newStatus: any) {
