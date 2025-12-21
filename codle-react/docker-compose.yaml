@@ -3,4 +3,4 @@ services:
     build:
       dockerfile: ./dockerfile.prod
     ports:
-     - 4173:4173
+     - 3000:3000
