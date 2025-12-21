@@ -1,5 +1,7 @@
 ** For those from MOOC DOCKER course, this is wordle but in portuguese.
 
+O Projeto pode ser acessado aqui:  https://termo-7n23.onrender.com
+
 ## 1. O Codle:
 
 O **Codle** é uma releitura do clássico jogo de palavras “Termo”/“Wordle”, em que o usuário tenta adivinhar uma palavra de 5 letras em até 6 tentativas.  
@@ -40,7 +42,7 @@ Interface interativa com as seguintes funcionalidades:
 # 5. Developing com Docker
 - use 'docker compose -f docker-compose.dev.yaml up'
 
-## 5. Inicializando com Docker
+## 6. Inicializando com Docker Localmente
 - use 'docker compose up' to initialize.
 - or
 - 'docker build -f dockerfile.prod -t wordle . && docker run -it -p 127.0.0.1:3000:3000 wordle'
