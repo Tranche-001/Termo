@@ -6,12 +6,14 @@ COPY package* .
 
 RUN npm install
 
+RUN npm install -g serve
+
 COPY . .
 
 RUN npm run build
 
-EXPOSE 4173
+EXPOSE 3000
 
 # 2. CMD starts the PREVIEW server.
 # This runs the built files. This needs --host to be visible. 
-CMD ["npm", "run", "preview", "--", "--host"]
+CMD ["serve", "-s", "dist", "-l", "3000", "-n"]
