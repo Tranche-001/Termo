@@ -1,7 +1,8 @@
 ** For those from MOOC DOCKER course, this is wordle but in portuguese.
 
 O Projeto pode ser acessado aqui:  https://termo-7n23.onrender.com
-(Nesse deploy online temos apenas o frontend)
+(Nesse deploy online temos apenas o frontend.
+Atualmente não funcional devido a necessidade de agora uma integração com servidor local)
 
 
 
