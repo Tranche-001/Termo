@@ -1,6 +1,9 @@
 ** For those from MOOC DOCKER course, this is wordle but in portuguese.
 
 O Projeto pode ser acessado aqui:  https://termo-7n23.onrender.com
+(Nesse deploy online temos apenas o frontend)
+
+
 
 ## 1. O Codle:
 
@@ -35,6 +38,8 @@ Interface interativa com as seguintes funcionalidades:
 - JSX
 - SOLID principles
 
+# Para o Frontend apenas
+
 ## 4. Inicializando o projeto
 - npm install /codle-react
 - npm run dev /codle-react
@@ -48,3 +53,13 @@ Interface interativa com as seguintes funcionalidades:
 - 'docker build -f dockerfile.prod -t wordle . && docker run -it -p 127.0.0.1:3000:3000 wordle'
 - You can also access from dockerhub: tranche100/wordle .
 - So running 'docker run -it -p 127.0.0.1:3000:3000 tranche100/wordle', also works.
+
+# Inicializando com o back
+- Primeiro tera que setar as envs necessárias
+- UID/GID serve para lidar com permissões entre sua máquina e o DOCKER
+  - Se estiver com problemas para manipular arquivos do container que estão conversando
+  - com seus arquivos locais através dos volumes, rode sudo chown -R $USER:$USER .
+- MONGO_URI para o backend conectar com seu banco de dados
+- Será necessário adicionar alguns itens no banco para testar a comunicação.
+- Realize as migrations necessárias e use os commandos do Django para adicionar palavras normalmente.
+- Após isso rode docker compose up.

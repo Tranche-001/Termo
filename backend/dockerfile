@@ -1,0 +1,21 @@
+FROM python:latest
+
+WORKDIR /usr/src/app
+
+RUN pip install django-mongodb-backend
+
+RUN pip install djangorestframework
+
+RUN python -m pip install "pymongo[srv]"
+
+RUN pip install python-dotenv
+
+RUN pip install django-cors-headers
+
+COPY . .
+
+WORKDIR /usr/src/app/djangotutorial/termo_backend
+
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

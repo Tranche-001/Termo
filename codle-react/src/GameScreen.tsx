@@ -31,17 +31,25 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
     }
   }, [rowStatus])
 
-  // gets a random int number between [min, max] (inclusive)
-  const randomNumberInRange = (min: number, max: number) => {
-    return Math.floor(Math.random()
-      * (max - min + 1)) + min;
-  };
+  //Words Logic
+  const [words, setWords] = useState([]);
+
+  useEffect(() => {
+    // Replace with your actual Docker/Local URL
+    fetch('http://localhost:8000/api/words') 
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setWords(data);
+      })
+      .catch(error => console.error('Error fetching words:', error));
+  }, []);
 
   //if the endGame Modal is Open -> set all Rows as completed
   useEffect(() => {
     if (isEndGameModalOpen[0]) {
       setRowStatus(prevStatus => {
-        let newStatus = [...prevStatus];
+        const newStatus = [...prevStatus];
 
         for (let i = 0; i < NUM_OF_ROWS; i++) {
           if (newStatus[i] == "activated") newStatus[i] = "deactivated";
@@ -52,12 +60,18 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
   }, [isEndGameModalOpen[0]]);
 
 
+    // gets a random int number between [min, max] (inclusive)
+  const randomNumberInRange = (min: number, max: number) => {
+    return Math.floor(Math.random()
+      * (max - min + 1)) + min;
+  };
   function getRandomWord() {
-    const randomIndex = randomNumberInRange(0, data.words.length - 1)
-    console.log(data.words[randomIndex]);
-    return data.words[randomIndex];
+    const randomIndex = randomNumberInRange(0, words.length - 1)
+    console.log(words[randomIndex]);
+    return words[randomIndex];
   }
 
+  //Get a new word every reload
   useEffect(() => {
     const newGameWord = getRandomWord();
     setGameWord(newGameWord);

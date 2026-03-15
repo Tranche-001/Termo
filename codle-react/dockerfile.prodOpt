@@ -1,0 +1,22 @@
+  # Use a stable Node 18 version
+  FROM node:18-alpine as build-stage
+
+  WORKDIR /usr/src/app
+
+  COPY package*.json ./
+
+  RUN npm install
+
+  COPY . .
+
+  RUN npm run build
+
+  # Production stage
+  FROM nginx:stable-alpine
+
+  # Note: Changed /build/ to /dist/ to match default Vite behavior
+  COPY --from=build-stage /usr/src/app/dist/ /usr/share/nginx/html
+
+  EXPOSE 80
+
+  CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,17 @@
+services:
+  termo-front:
+    build:
+      context: ./codle-react
+      dockerfile: ./dockerfile.prod
+    ports:
+     - 3000:3000
+  
+  termo-back:
+    build:
+      context: ./backend
+      dockerfile: ./dockerfile
+    ports: 
+      - 8000:8000
+    user: "${UID}:${GID}"
+    environment:
+      - MONGO_URI=${MONGO_URI}
