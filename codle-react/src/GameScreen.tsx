@@ -40,14 +40,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
       .then(data => {
         // data is: [{id:..., word: "melao"}, ...]
         // We transform it into: ["melao", "manga", ...]
-<<<<<<< HEAD
         const wordList = data.map((item: { word: string; }) => item.word.toLowerCase());
         
-=======
-        const wordList = data.map(item => item.word.toLowerCase());
-        
-        console.log("Translated words:", wordList);
->>>>>>> 80fe6e59dcaedf4a874bbc2baddf05221fa5ef1b
         setWords(wordList);
       })
       .catch(error => console.error('Error fetching words:', error));
