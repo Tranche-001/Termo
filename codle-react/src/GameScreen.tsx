@@ -35,12 +35,14 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
   const [words, setWords] = useState([]);
 
   useEffect(() => {
-    // Replace with your actual Docker/Local URL
     fetch('https://wordle-backend-sc1m.onrender.com/api/words') 
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-        setWords(data);
+        // data is: [{id:..., word: "melao"}, ...]
+        // We transform it into: ["melao", "manga", ...]
+        const wordList = data.map((item: { word: string; }) => item.word.toLowerCase());
+        
+        setWords(wordList);
       })
       .catch(error => console.error('Error fetching words:', error));
   }, []);
