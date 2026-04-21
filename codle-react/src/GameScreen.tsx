@@ -36,7 +36,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
 
   useEffect(() => {
     // Replace with your actual Docker/Local URL
-    fetch('http://localhost:8000/api/words') 
+    fetch('https://wordle-backend-sc1m.onrender.com/api/words') 
       .then(response => response.json())
       .then(data => {
         console.log(data);

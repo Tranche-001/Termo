@@ -1,0 +1,26 @@
+FROM python:3.11-slim
+
+# Set environment variables to keep Python from buffering logs
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /usr/src/app
+
+# Install all dependencies in one layer
+RUN pip install --no-cache-dir \
+    django-mongodb-backend \
+    djangorestframework \
+    "pymongo[srv]" \
+    python-dotenv \
+    django-cors-headers \
+    gunicorn
+
+# Copy the entire project
+COPY . .
+
+# Step into the directory where manage.py and the project config live
+WORKDIR /usr/src/app/djangotutorial/termo_backend
+
+# Render usually looks for a port via an environment variable. 
+# We'll bind Gunicorn to 0.0.0.0 and the port Render gives us.
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "quickstart.wsgi:application"]
