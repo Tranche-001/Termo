@@ -34,19 +34,22 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
   //Words Logic
   const [words, setWords] = useState([]);
 
+  // 1. Unificamos o Fetch e a escolha da palavra
   useEffect(() => {
-    fetch('https://wordle-backend-sc1m.onrender.com/api/words') 
+    fetch('https://wordle-backend-sc1m.onrender.com/api/words')
       .then(response => response.json())
       .then(data => {
-        // data is: [{id:..., word: "melao"}, ...]
-        // We transform it into: ["melao", "manga", ...]
         const wordList = data.map((item: { word: string; }) => item.word.toLowerCase());
-        
         setWords(wordList);
+
+        // Escolhemos a palavra IMEDIATAMENTE após receber a lista
+        if (wordList.length > 0) {
+          const randomIndex = Math.floor(Math.random() * wordList.length);
+          setGameWord(wordList[randomIndex]);
+        }
       })
       .catch(error => console.error('Error fetching words:', error));
   }, []);
-
   //if the endGame Modal is Open -> set all Rows as completed
   useEffect(() => {
     if (isEndGameModalOpen[0]) {
@@ -62,7 +65,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
   }, [isEndGameModalOpen[0]]);
 
 
-    // gets a random int number between [min, max] (inclusive)
+  // gets a random int number between [min, max] (inclusive)
   const randomNumberInRange = (min: number, max: number) => {
     return Math.floor(Math.random()
       * (max - min + 1)) + min;
@@ -73,40 +76,41 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
     return words[randomIndex];
   }
 
-  //Get a new word every reload
-  useEffect(() => {
-    const newGameWord = getRandomWord();
-    setGameWord(newGameWord);
-  }, [])
+
 
 
   function seeIfWordIsValidOnDataSet(word: string) {
     let isWordValid = false;
-    for (let i = 0; i < data.words.length - 1; i++) {
-      if (word === data.words[i]) {
+    for (let i = 0; i < words.length - 1; i++) {
+      if (word === words[i]) {
         isWordValid = true;
       }
     }
     return isWordValid;
   }
 
-  return (
-    <>
-      <div className="game-screen-container">
-        {
-          numOfRows.map(index => {
-            return <GameRow rowStatus={rowStatus[index]}
-              correctWord={gameWord}
-              seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet}
-              setRowStatus={setRowStatus}
-              key={index}
-              setIsInvalidWordModalOpen={setIsInvalidWordModalOpen}
+  if (!gameWord) {
+    return <div>Carregando dicionário...</div>; // Evita que o GameRow receba uma string vazia
+  }
+  else {
+    return (
+      <>
+        <div className="game-screen-container">
+          {
+            numOfRows.map(index => {
+              return <GameRow rowStatus={rowStatus[index]}
+                correctWord={gameWord}
+                seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet}
+                setRowStatus={setRowStatus}
+                key={index}
+                setIsInvalidWordModalOpen={setIsInvalidWordModalOpen}
 
-            />
-          })
-        }
+              />
+            })
+          }
 
-      </div>
-    </>
-  )
+        </div>
+      </>
+    )
+  }
 }
