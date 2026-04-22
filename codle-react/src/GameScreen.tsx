@@ -44,8 +44,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
 
         // Escolhemos a palavra IMEDIATAMENTE após receber a lista
         if (wordList.length > 0) {
-          const randomIndex = Math.floor(Math.random() * wordList.length);
-          setGameWord(wordList[randomIndex]);
+          const randomWord = getRandomWord(wordList);
+          console.log(randomWord)
+          setGameWord(randomWord);
         }
       })
       .catch(error => console.error('Error fetching words:', error));
@@ -70,10 +71,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
     return Math.floor(Math.random()
       * (max - min + 1)) + min;
   };
-  function getRandomWord() {
-    const randomIndex = randomNumberInRange(0, words.length - 1)
-    console.log(words[randomIndex]);
-    return words[randomIndex];
+  function getRandomWord(wordList: []) {
+    const randomIndex = randomNumberInRange(0, wordList.length - 1)
+    console.log(wordList[randomIndex]);
+    return wordList[randomIndex];
   }
 
 
@@ -88,9 +89,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpe
     }
     return isWordValid;
   }
-
+  
   if (!gameWord) {
-    return <div>Carregando dicionário...</div>; // Evita que o GameRow receba uma string vazia
+    return <div style={{color:'white'}}>Carregando dicionário...</div>; // Evita que o GameRow receba uma string vazia
   }
   else {
     return (
