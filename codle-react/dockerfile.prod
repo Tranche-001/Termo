@@ -1,19 +1,35 @@
-FROM node:latest
+FROM node:20-alpine AS builder
 
 WORKDIR /usr/src/app
 
-COPY package* .
+# Copy package files first to leverage Docker layer caching
+COPY package*.json ./
 
-RUN npm install
+# Install dependencies (including devDependencies needed for build)
+RUN npm ci
 
-RUN npm install -g serve
-
+# Copy the rest of the source code
 COPY . .
 
-RUN npm run build
+# --- Stage 2: Production ---
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Set environment to production
+ENV NODE_ENV=production
+
+# Install 'serve' globally in the runner stage
+RUN npm install -g serve
+
+# Only copy the build output from the builder stage
+# This ignores node_modules and source code
+COPY --from=builder /app/dist ./dist
+
+# Create a non-root user for security
+USER node
 
 EXPOSE 3000
 
-# 2. CMD starts the PREVIEW server.
-# This runs the built files. This needs --host to be visible. 
-CMD ["serve", "-s", "dist", "-l", "3000", "-n"]
+# Start the server
+CMD ["serve", "-s", "dist", "-l", "3000"]
