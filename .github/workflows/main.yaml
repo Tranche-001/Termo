@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:  # name of the job
+  build:  
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +22,18 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3 
 
-    - name: Build and push Docker image
+    - name: Build and push Docker image Frontend
       uses: docker/build-push-action@v6
       with:
         context: ./codle-react
         file: ./codle-react/dockerfile.prod
         push: true
         tags: ${{ vars.DOCKERHUB_USERNAME }}/wordle:latest
+
+    - name: Build and push Docker image Bckend
+      uses: docker/build-push-action@v6
+      with:
+        context: ./backend
+        file: ./backend/dockerfile.prod
+        push: true
+        tags: ${{ vars.DOCKERHUB_USERNAME }}/wordle-backend:latest
