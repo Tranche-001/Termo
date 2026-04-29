@@ -1,117 +1,79 @@
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import GameRow from "./GameRow";
+import Keyboard from "./Keyboard";
+import { useEndGameContext, useModalContext } from "./context";
+import { useGameWord } from "./useGameWord";
+import { useKeyboardStatuses } from "./useKeyboardStatuses";
+import { NUM_OF_ROWS, WORD_SIZE } from "./constants";
 
-import data from "../assets/data/words.json";
-type EndGame = [boolean, string];
+export const GameScreen: React.FC = () => {
+  const { setIsInvalidWordModalOpen } = useModalContext();
+  const { isEndGameModalOpen, setIsEndGameModalOpen } = useEndGameContext();
+  const { gameWord, isWordInDictionary } = useGameWord();
 
-interface GameScreenProps {
-  setIsInvalidWordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isEndGameModalOpen: EndGame;
-  setIsEndGameModalOpen: React.Dispatch<React.SetStateAction<EndGame>>;
+  const [rowStatus, setRowStatus] = useState<string[]>(() => {
+    const initial = Array(NUM_OF_ROWS).fill("deactivated");
+    initial[0] = "activated";
+    return initial;
+  });
 
-}
-export const GameScreen: React.FC<GameScreenProps> = ({ setIsInvalidWordModalOpen, isEndGameModalOpen, setIsEndGameModalOpen }) => {
-  const NUM_OF_ROWS = 6;
-  const numOfRows = Array.from({ length: NUM_OF_ROWS }, (_, index) => index)
+  const [guesses, setGuesses] = useState<string[][]>(() =>
+    Array.from({ length: NUM_OF_ROWS }, () => Array(WORD_SIZE).fill("")),
+  );
 
-  const [gameWord, setGameWord] = useState<string>("");
+  const setLettersForRow = useCallback(
+    (rowIdx: number) => (updater: React.SetStateAction<string[]>) => {
+      setGuesses((prev) => {
+        const next = [...prev];
+        next[rowIdx] =
+          typeof updater === "function"
+            ? (updater as (p: string[]) => string[])(prev[rowIdx])
+            : updater;
+        return next;
+      });
+    },
+    [],
+  );
 
-  const [rowStatus, setRowStatus] = useState<string[]>(["activated", "deactivated", "deactivated", "deactivated", "deactivated", "deactivated"]);
-
-  //If everyRowIscompleted and the modal is not already open -> the player lost the game
+  // Lost when every row is completed without a win.
   useEffect(() => {
-    let everyRowIsCompleted = true;
-    rowStatus.map(row => {
-      if (row != "completed") {
-        everyRowIsCompleted = false;
-      }
-    })
-    if (everyRowIsCompleted) {
-      if (!isEndGameModalOpen[0]) setIsEndGameModalOpen([true, "lost"]);
+    const allCompleted = rowStatus.every((s) => s === "completed");
+    if (allCompleted && !isEndGameModalOpen[0]) {
+      setIsEndGameModalOpen([true, "lost", NUM_OF_ROWS]);
     }
-  }, [rowStatus])
+  }, [rowStatus, isEndGameModalOpen, setIsEndGameModalOpen]);
 
-  //Words Logic
-  const [words, setWords] = useState([]);
-
-  // 1. Unificamos o Fetch e a escolha da palavra
-  useEffect(() => {
-    fetch('https://wordle-backend-sc1m.onrender.com/api/words')
-      .then(response => response.json())
-      .then(data => {
-        const wordList = data.map((item: { word: string; }) => item.word.toLowerCase());
-        setWords(wordList);
-
-        // Escolhemos a palavra IMEDIATAMENTE após receber a lista
-        if (wordList.length > 0) {
-          const randomWord = getRandomWord(wordList);
-          console.log(randomWord)
-          setGameWord(randomWord);
-        }
-      })
-      .catch(error => console.error('Error fetching words:', error));
-  }, []);
-  //if the endGame Modal is Open -> set all Rows as completed
+  // Once the end-game modal is open, freeze any still-active row.
   useEffect(() => {
     if (isEndGameModalOpen[0]) {
-      setRowStatus(prevStatus => {
-        const newStatus = [...prevStatus];
-
-        for (let i = 0; i < NUM_OF_ROWS; i++) {
-          if (newStatus[i] == "activated") newStatus[i] = "deactivated";
-        }
-        return newStatus;
-      })
+      setRowStatus((prev) => prev.map((s) => (s === "activated" ? "deactivated" : s)));
     }
-  }, [isEndGameModalOpen[0]]);
+  }, [isEndGameModalOpen]);
 
+  const keyboardStatuses = useKeyboardStatuses(guesses, rowStatus, gameWord);
 
-  // gets a random int number between [min, max] (inclusive)
-  const randomNumberInRange = (min: number, max: number) => {
-    return Math.floor(Math.random()
-      * (max - min + 1)) + min;
-  };
-  function getRandomWord(wordList: []) {
-    const randomIndex = randomNumberInRange(0, wordList.length - 1)
-    console.log(wordList[randomIndex]);
-    return wordList[randomIndex];
-  }
-
-
-
-
-  function seeIfWordIsValidOnDataSet(word: string) {
-    let isWordValid = false;
-    for (let i = 0; i < words.length - 1; i++) {
-      if (word === words[i]) {
-        isWordValid = true;
-      }
-    }
-    return isWordValid;
-  }
-  
   if (!gameWord) {
-    return <div style={{color:'white'}}>Carregando dicionário...</div>; // Evita que o GameRow receba uma string vazia
+    return <div style={{ color: "white" }}>Carregando dicionário...</div>;
   }
-  else {
-    return (
-      <>
-        <div className="game-screen-container">
-          {
-            numOfRows.map(index => {
-              return <GameRow rowStatus={rowStatus[index]}
-                correctWord={gameWord}
-                seeIfWordIsValidOnDataSet={seeIfWordIsValidOnDataSet}
-                setRowStatus={setRowStatus}
-                key={index}
-                setIsInvalidWordModalOpen={setIsInvalidWordModalOpen}
 
-              />
-            })
-          }
-
-        </div>
-      </>
-    )
-  }
-}
+  return (
+    <>
+      <div className="game-screen-container">
+        {Array.from({ length: NUM_OF_ROWS }, (_, idx) => (
+          <GameRow
+            key={idx}
+            rowIdx={idx}
+            rowStatus={rowStatus[idx]}
+            correctWord={gameWord}
+            isWordInDictionary={isWordInDictionary}
+            setRowStatus={setRowStatus}
+            setIsInvalidWordModalOpen={setIsInvalidWordModalOpen}
+            letters={guesses[idx]}
+            setLetters={setLettersForRow(idx)}
+          />
+        ))}
+      </div>
+      <Keyboard statuses={keyboardStatuses} />
+    </>
+  );
+};

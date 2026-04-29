@@ -1,4 +1,11 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(npx vite *)",
+      "mcp__playwright",
+      "Bash(npx eslint *)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -11,6 +18,8 @@
         ]
       }
     ]
-}
-     
+  },
+  "enabledMcpjsonServers": [
+    "playwright"
+  ]
 }

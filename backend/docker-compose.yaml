@@ -1,11 +1,8 @@
 services:
-  backend:
-    tty: true
-    build: .
-    ports: 
-      - 8000:8000
-    user: "${UID}:${GID}"
-    volumes:
-      - ./:/usr/src/app
+  termo:
+    build:
+      dockerfile: ./dockerfile.prod
+    ports:
+     - 8000:8000
     environment:
       - MONGO_URI=${MONGO_URI}

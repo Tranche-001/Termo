@@ -1,0 +1,11 @@
+services:
+  backend:
+    tty: true
+    build: .
+    ports: 
+      - 8000:8000
+    user: "${UID}:${GID}"
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      - MONGO_URI=${MONGO_URI}

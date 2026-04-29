@@ -139,46 +139,61 @@
 /* keyboard-container-section */
 
 .keyboard-container {
-
-  /* size */
   max-width: 720px;
   width: 100%;
-
-  /* positioning */
-
-  user-select: none;
-  flex-shrink: 0;
+  margin: 16px auto 0;
   padding: 0 0.5em 0.3em 0.5em;
-  margin: 0;
   box-sizing: border-box;
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(32, 1fr);
-  grid-gap: 0.25em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  user-select: none;
+}
 
-  margin: 0 auto;
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.4em;
 }
 
 .letter-button {
+  flex: 1 1 0;
+  max-width: 60px;
+  height: 50px;
   touch-action: manipulation;
   outline: none;
   background-color: #333;
-  /* display and alignment */
-  grid-column: span 3;
   display: flex;
-  margin: 0;
   justify-content: center;
   align-items: center;
-  border-radius: 8%;
-  /* font */
-  font-size: 20px;
-  line-height: 20px;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1;
   font-weight: 700;
   font-family: var(--font-monteserrat);
-
   cursor: pointer;
   border: none;
   color: #FAFAFF;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.letter-button:hover {
+  background-color: #444;
+}
+
+.letter-button.right-position {
+  background-color: #357465;
+  color: #FAFAFF;
+}
+
+.letter-button.wrong-position {
+  background-color: #8B8F4D;
+  color: #FAFAFF;
+}
+
+.letter-button.absent-letter {
+  background-color: #1f1f1f;
+  color: #6a6a6a;
 }
 
 
@@ -213,4 +228,166 @@
 
 .fade-out {
   opacity: 0;
+}
+
+
+/* End-game modal */
+
+.end-game-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-in-out;
+  z-index: 50;
+  padding: 16px;
+}
+
+.end-game-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.end-game-card {
+  position: relative;
+  width: min(520px, 100%);
+  background-color: #2f2f2f;
+  border-radius: 12px;
+  padding: 32px 28px 28px;
+  color: #fafaff;
+  font-family: var(--font-monteserrat), sans-serif;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.end-game-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #b8b8b8;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.end-game-close:hover {
+  color: #fafaff;
+}
+
+.end-game-badge {
+  display: block;
+  margin: 0 auto 24px;
+  padding: 12px 28px;
+  border-radius: 6px;
+  background-color: #3aa1ff;
+  color: #fafaff;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  width: fit-content;
+}
+
+.end-game-badge.lost {
+  background-color: #c0392b;
+}
+
+.end-game-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.end-game-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.end-game-stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.end-game-stat-label {
+  font-size: 13px;
+  color: #b8b8b8;
+  white-space: pre-line;
+  line-height: 1.2;
+}
+
+.end-game-distribution-title {
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.end-game-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.end-game-dist-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.end-game-dist-label {
+  width: 22px;
+  text-align: center;
+  color: #d6d6d6;
+  font-weight: 600;
+}
+
+.end-game-bar {
+  background-color: #4a4a4a;
+  color: #fafaff;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  min-width: 26px;
+  text-align: right;
+  transition: background-color 0.2s ease;
+}
+
+.end-game-bar.highlight {
+  background-color: #3aa1ff;
+}
+
+.end-game-bar.loss.highlight {
+  background-color: #c0392b;
+}
+
+.end-game-action {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #357465;
+  color: #fafaff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.2s ease;
+}
+
+.end-game-action:hover {
+  background-color: #3f8b78;
 }

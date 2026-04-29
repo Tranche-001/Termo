@@ -1,29 +1,31 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
+import { useModalContext } from "./context";
+import { KEYBOARD_EVENT, WORD_SIZE } from "./constants";
 
-import { useModalContext } from './App.tsx';
 interface WordInputProps {
   letters: string[];
-  status: string
-  handleStartCorrection: React.Dispatch<React.SetStateAction<void>>;
-  setLetters: React.Dispatch<React.SetStateAction<string[]>>;
+  status: string;
+  handleStartCorrection: () => void;
+  setLetters: (updater: React.SetStateAction<string[]>) => void;
 }
 
-
-const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorrection, setLetters }) => {
+const WordInput: React.FC<WordInputProps> = ({
+  letters,
+  status,
+  handleStartCorrection,
+  setLetters,
+}) => {
   const { isInvalidWordModalOpen, setIsInvalidWordModalOpen } = useModalContext();
-
   const [lastEditedIndex, setLastEditedIndex] = useState<number | null>(null);
 
   const formRef = useRef<HTMLFormElement>(null);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const WORDSIZE = 5;
 
   useEffect(() => {
-    inputRefs.current = inputRefs.current.slice(0, WORDSIZE);
+    inputRefs.current = inputRefs.current.slice(0, WORD_SIZE);
   }, []);
 
-  // when submiting we begin the process of correction on GameRow
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     handleStartCorrection();
@@ -31,117 +33,103 @@ const WordInput: React.FC<WordInputProps> = ({ letters, status, handleStartCorre
 
   function handleLetterChangeOnWord(e: React.ChangeEvent<HTMLInputElement>, index: number) {
     const newLetter = e.target.value;
-
-    setLetters(prevLetters => {
-      let newLetters = [...prevLetters];
-      newLetters[index] = newLetter;
-      return newLetters;
-    })
-    // this will be important to know from where to where we are going to jump when focusing
-    // if the last edited was the 3th one, then jump to the next letter will go to the 4th
-    setLastEditedIndex(index)
+    setLetters((prev) => {
+      const next = [...prev];
+      next[index] = newLetter;
+      return next;
+    });
+    setLastEditedIndex(index);
   }
 
-
-  // Goes to the end of the input when focusing
+  // Keep the caret at the end whenever an input is focused.
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>, index: number) => {
     setTimeout(() => {
-      e.target.setSelectionRange(
-        e.target.value.length,
-        e.target.value.length
-      );
+      e.target.setSelectionRange(e.target.value.length, e.target.value.length);
       inputRefs.current[index]?.select();
     }, 0);
   };
 
-
-
-  // Jump To Next Empty Letter Logic
   useEffect(() => {
     if (lastEditedIndex !== null && letters[lastEditedIndex] !== "") {
-      jumptToNextEmptyLetter(lastEditedIndex);
+      jumpToNextEmptyLetter(lastEditedIndex);
     }
   }, [letters, lastEditedIndex]);
 
-  //Focus on the first Letter when Game Start
   useEffect(() => {
     inputRefs.current[0]?.focus();
-  }, [])
+  }, []);
 
-  // When there is no other empty letter to focus, it will also focus automatically to the invisible button 
-  function jumptToNextEmptyLetter(index: number) {
-    let inputNode = null;
-    // search for the next empty letter
-    // Why i%WORDSIZE?, because I want to cycle through the Array, starting from the index next to the last filled
-    // and then going until it stops right before the last filled
-    let flagLetterIsEmpty = false;
-    for (let i = index + 1; i < index + 5; i++) {
-      if (inputRefs.current[i % WORDSIZE]?.value === "") {
-        flagLetterIsEmpty = true;
-        inputNode = inputRefs.current[i % WORDSIZE];
-        inputNode?.focus();
-        break;
+  // Cycles forward from the last edited index to find an empty input;
+  // if every slot is filled, focus the hidden submit button so Enter submits.
+  function jumpToNextEmptyLetter(index: number) {
+    for (let i = index + 1; i < index + WORD_SIZE; i++) {
+      const node = inputRefs.current[i % WORD_SIZE];
+      if (node?.value === "") {
+        node.focus();
+        return;
       }
     }
-    if (!flagLetterIsEmpty) {
-      inputNode = inputRefs.current[index];
-      buttonRef.current?.focus();
-    }
+    buttonRef.current?.focus();
   }
 
-
-
-  //Backspace logic
-  //If Input is Empty and you press backspace/delete, it will focus on the previous index.
-  function ifInputIsEmptyGoBackOne(e: any, index: number) {
-    if (e.keyCode == '8' || e.keyCode == '46') {
-
-      // Focus on the previous index, if the current focused input is empty and backspace is pressed
+  function ifInputIsEmptyGoBackOne(e: React.KeyboardEvent, index: number) {
+    if (e.keyCode === 8 || e.keyCode === 46) {
       if (inputRefs.current[index]?.value === "" && index - 1 >= 0) {
         inputRefs.current[index - 1]?.focus();
+      } else if (buttonRef.current === document.activeElement) {
+        inputRefs.current[index]?.focus();
       }
-      // Basically, if everything is filled, then the button is focused.
-      // So, pressing backspace must lead to last letter.
-      else if (buttonRef.current === document.activeElement) {
-        inputRefs.current[index]?.focus()
-
-      }
-      // And also close the invalid word Modal if it is on.
       if (isInvalidWordModalOpen) setIsInvalidWordModalOpen(false);
     }
   }
 
+  // Virtual keyboard: a click on a Keyboard button dispatches a CustomEvent
+  // carrying the letter. The currently active row writes it into the next
+  // empty slot and lets the existing focus logic advance the caret.
+  useEffect(() => {
+    function onKey(e: Event) {
+      const ce = e as CustomEvent<{ key: string }>;
+      const key = (ce.detail?.key || "").toLowerCase();
+      if (!key) return;
+      const idx = letters.findIndex((l) => l === "");
+      if (idx < 0) return;
+      setLetters((prev) => {
+        const next = [...prev];
+        next[idx] = key;
+        return next;
+      });
+      setLastEditedIndex(idx);
+    }
+    window.addEventListener(KEYBOARD_EVENT, onKey);
+    return () => window.removeEventListener(KEYBOARD_EVENT, onKey);
+  }, [letters, setLetters]);
 
+  if (status !== "activated") return null;
 
-  if (status === "activated") {
-    return (
-      <>
-        <form action="" className='game-screen-row' ref={formRef} onSubmit={(e) => handleSubmit(e)}>
-          {
-            [0, 1, 2, 3, 4].map(index => (
-              <input
-                type="text"
-                key={index}
-                className="letter-square activated"
-                ref={el => { inputRefs.current[index] = el; }}
-                maxLength={1}
-                value={letters[index]}
-                onChange={e => handleLetterChangeOnWord(e, index)}
-                onFocus={e => handleFocus(e, index)}
-                onKeyDown={e => ifInputIsEmptyGoBackOne(e, index)}
-              />
-            ))
-          }
-          <button type="submit" onKeyDown={e => ifInputIsEmptyGoBackOne(e, 4)} ref={buttonRef}></button>
-        </form>
+  return (
+    <form className="game-screen-row" ref={formRef} onSubmit={handleSubmit}>
+      {Array.from({ length: WORD_SIZE }, (_, index) => (
+        <input
+          type="text"
+          key={index}
+          className="letter-square activated"
+          ref={(el) => {
+            inputRefs.current[index] = el;
+          }}
+          maxLength={1}
+          value={letters[index]}
+          onChange={(e) => handleLetterChangeOnWord(e, index)}
+          onFocus={(e) => handleFocus(e, index)}
+          onKeyDown={(e) => ifInputIsEmptyGoBackOne(e, index)}
+        />
+      ))}
+      <button
+        type="submit"
+        onKeyDown={(e) => ifInputIsEmptyGoBackOne(e, WORD_SIZE - 1)}
+        ref={buttonRef}
+      ></button>
+    </form>
+  );
+};
 
-      </>)
-  }
-
-
-
-
-
-}
-
-export default WordInput
+export default WordInput;

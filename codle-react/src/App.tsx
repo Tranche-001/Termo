@@ -1,104 +1,59 @@
-
+import { useState } from "react";
 import Title from "/assets/images/Title.svg";
 import QuestionMark from "/assets/images/QuestionMark.svg";
-import Reload from "/assets/images/Reload.svg"
-import { GameScreen } from './GameScreen';
-import { createContext, useContext, useState } from 'react';
-import Modal from './InvalidWordModal.tsx'
-import EndGameScreen from "./EndGameScreen.tsx";
+import Reload from "/assets/images/Reload.svg";
 
-  type EndGame = [boolean, string];
-
-const ModalContext = createContext<{
-  isInvalidWordModalOpen: boolean;
-  setIsInvalidWordModalOpen: (value: boolean) => void;
-}>({
-  isInvalidWordModalOpen: false,
-  setIsInvalidWordModalOpen: () => { },
-});
-
-export function useModalContext() {
-  return useContext(ModalContext);
-}
-
-
-const EndGameContext = createContext<{
-  isEndGameModalOpen: EndGame;
-  setIsEndGameModalOpen: (value: EndGame) => void;
-}>({
-  isEndGameModalOpen: [false, ""],
-  setIsEndGameModalOpen: () => { },
-});
-
-export function useEndGameContext() {
-  return useContext(EndGameContext);
-}
-
-
+import { GameScreen } from "./GameScreen";
+import InvalidWordModal from "./InvalidWordModal";
+import EndGameScreen from "./EndGameScreen";
+import { EndGameContext, ModalContext } from "./context";
+import type { EndGame } from "./types";
 
 function App() {
-
-  const lettersRow1 = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(65 + i)
-  );
-  const lettersRow2 = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(65 + i)
-  );
-  const lettersRow3 = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(65 + i)
-  );
-
-
   const [isInvalidWordModalOpen, setIsInvalidWordModalOpen] = useState<boolean>(false);
+  const [isEndGameModalOpen, setIsEndGameModalOpen] = useState<EndGame>([false, "", 0]);
+  const [tryAgainKey, setTryAgainKey] = useState<number>(0);
 
-  const [isEndGameModalOpen, setIsEndGameModalOpen] = useState<EndGame>([false, ""]);
+  const handleReload = () => {
+    setIsEndGameModalOpen([false, "", 0]);
+    setTryAgainKey((prev) => prev + 1);
+  };
 
-  const[tryAgainKey, setTryAgainKey] = useState<number>(0);
-  
   return (
-    <>
-      <div className='main-container'>
-        <div className="header">
-          <div>Feito com poeira cosmica por <span>Codelab</span></div>
-        </div>
-
-        <div className="logo-container">
-          <button>
-            <img src={QuestionMark} alt="" />
-          </button>
-          <div className="logo-text">
-            <img src={Title} alt="" />
-          </div>
-          <button>
-            <img src={Reload} alt="" />
-          </button>
-        </div>
-        
-        {/* invalid word modal */}
-
-        <Modal isInvalidWordModalOpen={isInvalidWordModalOpen} />
-        <EndGameContext.Provider value={{ isEndGameModalOpen, setIsEndGameModalOpen }}>
-          <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
-            <GameScreen key={tryAgainKey} setIsInvalidWordModalOpen={setIsInvalidWordModalOpen} isEndGameModalOpen = {isEndGameModalOpen} setIsEndGameModalOpen={setIsEndGameModalOpen}/>
-          </ModalContext.Provider>
-        </EndGameContext.Provider>
-
-        {/* eng game modal */}
-        <EndGameScreen endGameValue={"win"} isEndGameModalOpen={isEndGameModalOpen} setTryAgainKey={setTryAgainKey} setIsEndGameModalOpen = {setIsEndGameModalOpen} />
-        <div className="keyboard-container">
-          {lettersRow1.map((letter) => (
-            <button
-              key={letter}
-              id={`button-${letter}`}
-              className='letter-button'>
-
-              {letter}
-            </button>
-          ))}
+    <div className="main-container">
+      <div className="header">
+        <div>
+          Feito com poeira cosmica por <span>Codelab</span>
         </div>
       </div>
-    </>
-  )
+
+      <div className="logo-container">
+        <button>
+          <img src={QuestionMark} alt="" />
+        </button>
+        <div className="logo-text">
+          <img src={Title} alt="" />
+        </div>
+        <button onClick={handleReload}>
+          <img src={Reload} alt="" />
+        </button>
+      </div>
+
+      <InvalidWordModal isInvalidWordModalOpen={isInvalidWordModalOpen} />
+
+      <EndGameContext.Provider value={{ isEndGameModalOpen, setIsEndGameModalOpen }}>
+        <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
+          <GameScreen key={tryAgainKey} />
+        </ModalContext.Provider>
+      </EndGameContext.Provider>
+
+      <EndGameScreen
+        isEndGameModalOpen={isEndGameModalOpen}
+        setTryAgainKey={setTryAgainKey}
+        setIsEndGameModalOpen={setIsEndGameModalOpen}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
