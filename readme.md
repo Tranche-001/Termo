@@ -1,10 +1,4 @@
-** For those from MOOC DOCKER course, this is wordle but in portuguese.
-
-O Projeto pode ser acessado aqui:  https://termo-7n23.onrender.com
-(Nesse deploy online temos apenas o frontend.
-Atualmente não funcional devido a necessidade de agora uma integração com servidor local)
-
-
+O Jogo pode ser acessado aqui:  https://termo-7n23.onrender.com
 
 ## 1. O Codle:
 
@@ -22,45 +16,35 @@ Interface interativa com as seguintes funcionalidades:
 
 | Item | Descrição                                                                            | Status |
 | ---- | ------------------------------------------------------------------------------------ | ------ |
-| 1    | Campo de entrada ou captura de teclas para as tentativas                             | ☐      |
-| 2    | Cálculo de feedback por letra (posição certa, letra certa local errada, inexistente) | ☐      |
-| 3    | Gerenciar o número de tentativas disponíveis.                                        | ☐      |
-| 4    | Controle de 6 linhas de tentativa.                                                   | ☐      |
-| 5    | Mecanismo para detectar vitória ou derrota.                                          | ☐      |
-| 6    | Possibilidade de começar um novo jogo com uma nova palavra aleatória                 | ☐      |
+| 1    | Campo de entrada ou captura de teclas para as tentativas                             | ☑      |
+| 2    | Cálculo de feedback por letra (posição certa, letra certa local errada, inexistente) | ☑      |
+| 3    | Gerenciar o número de tentativas disponíveis.                                        | ☑      |
+| 4    | Controle de 6 linhas de tentativa.                                                   | ☑      |
+| 5    | Mecanismo para detectar vitória ou derrota.                                          | ☑      |
+| 6    | Possibilidade de começar um novo jogo com uma nova palavra aleatória                 | ☑      |
 *(usado como base durante o desenvolvimento)*
 
 ## 3. Aprendizado
 - UseState
-- UseRef
-- Context
 - UseEffect
 - Typescript
-- JSX
-- SOLID principles
+- Django
+- Docker/Docker Compose
+- GithubActions CI/CD
+- Deploy on OnRender
+- Claude
 
-# Para o Frontend apenas
-
-## 4. Inicializando o projeto
-- npm install /codle-react
-- npm run dev /codle-react
-
-## 5. Developing com Docker
+## 4. Developing com Docker
+- acesse ou o codle-react(front) ou o backend
 - use 'docker compose -f docker-compose.dev.yaml up'
 
-## 6. Inicializando com Docker Localmente
+## 5. Inicializando com Docker Localmente
 - use 'docker compose up' to initialize.
-- or
-- 'docker build -f dockerfile.prod -t wordle . && docker run -it -p 127.0.0.1:3000:3000 wordle'
-- You can also access from dockerhub: tranche100/wordle .
-- So running 'docker run -it -p 127.0.0.1:3000:3000 tranche100/wordle', also works.
 
-# Inicializando com o back
+# OBS:
 - Primeiro tera que setar as envs necessárias
 - UID/GID serve para lidar com permissões entre sua máquina e o DOCKER
   - Se estiver com problemas para manipular arquivos do container que estão conversando
   - com seus arquivos locais através dos volumes, rode sudo chown -R $USER:$USER .
-- MONGO_URI para o backend conectar com seu banco de dados
-- Será necessário adicionar alguns itens no banco para testar a comunicação.
-- Realize as migrations necessárias e use os commandos do Django para adicionar palavras normalmente.
-- Após isso rode docker compose up.
+- MONGO_URI para o backend conectar com seu banco de dados Mongo.
+- Após isso rode 'docker compose up' na página local.
