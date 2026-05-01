@@ -41,6 +41,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:5173',
     'https://termo-7n23.onrender.com',
+    'http://localhost:80',
 ]
 
 ROOT_URLCONF = 'config.urls'
