@@ -33,10 +33,6 @@ const EndGameScreen: React.FC<EndGameScreenProps> = ({
     setIsEndGameModalOpen([false, "", 0]);
   }
 
-  function handleClose() {
-    setIsEndGameModalOpen([false, status, attempt]);
-  }
-
   const winPct = stats.games === 0 ? 0 : Math.round((stats.wins / stats.games) * 100);
   const headline =
     status === "won" ? PRAISE[attempt] ?? "Parabéns" : status === "lost" ? "Que pena!" : "";
@@ -47,7 +43,7 @@ const EndGameScreen: React.FC<EndGameScreenProps> = ({
   return (
     <div
       className={open ? "end-game-overlay open" : "end-game-overlay"}
-      onClick={handleClose}
+      onClick={handleTryAgain}
       aria-hidden={!open}
     >
       <div className="end-game-card" onClick={(e) => e.stopPropagation()}>
