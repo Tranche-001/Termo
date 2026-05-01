@@ -1,0 +1,47 @@
+- generic [ref=e3]:
+  - generic [ref=e5]: Feito com poeira cosmica por Codelab
+  - generic [ref=e6]:
+    - button [ref=e7]
+    - button [ref=e9]
+  - generic [ref=e12]: essa palavra não é aceita
+  - generic [ref=e13]: Carregando dicionário...
+  - generic:
+    - generic:
+      - button: ×
+      - generic:
+        - generic:
+          - generic: "0"
+          - generic: jogos
+        - generic:
+          - generic: 0%
+          - generic: de vitórias
+        - generic:
+          - generic: "0"
+          - generic: sequência de vitórias
+        - generic:
+          - generic: "0"
+          - generic: melhor sequência
+      - heading [level=2]: distribuição de tentativas
+      - generic:
+        - generic:
+          - generic: "1"
+          - generic: "0"
+        - generic:
+          - generic: "2"
+          - generic: "0"
+        - generic:
+          - generic: "3"
+          - generic: "0"
+        - generic:
+          - generic: "4"
+          - generic: "0"
+        - generic:
+          - generic: "5"
+          - generic: "0"
+        - generic:
+          - generic: "6"
+          - generic: "0"
+        - generic:
+          - generic: 💀
+          - generic: "0"
+      - button: Jogar de novo
