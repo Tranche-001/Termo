@@ -297,6 +297,25 @@
   background-color: #c0392b;
 }
 
+.end-game-answer {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: #aaa;
+}
+
+.end-game-answer-word {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 8px 20px;
+  background-color: #c0392b;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  border-radius: 6px;
+}
+
 .end-game-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

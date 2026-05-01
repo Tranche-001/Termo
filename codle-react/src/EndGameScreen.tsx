@@ -2,6 +2,7 @@ import React from "react";
 import type { EndGame } from "./types";
 import { NUM_OF_ROWS } from "./constants";
 import { useGameStats } from "./useGameStats";
+import { useEndGameContext } from "./context";
 
 interface EndGameScreenProps {
   isEndGameModalOpen: EndGame;
@@ -24,6 +25,7 @@ const EndGameScreen: React.FC<EndGameScreenProps> = ({
   setIsEndGameModalOpen,
 }) => {
   const [open, status, attempt] = isEndGameModalOpen;
+  const { gameWord } = useEndGameContext();
   const { stats } = useGameStats(isEndGameModalOpen);
 
   function handleTryAgain() {
@@ -49,11 +51,18 @@ const EndGameScreen: React.FC<EndGameScreenProps> = ({
       aria-hidden={!open}
     >
       <div className="end-game-card" onClick={(e) => e.stopPropagation()}>
-        <button className="end-game-close" onClick={handleClose} aria-label="Fechar">
+        <button className="end-game-close" onClick={handleTryAgain} aria-label="Fechar">
           ×
         </button>
 
         <div className={`end-game-badge ${status}`}>{headline}</div>
+
+        {status === "lost" && gameWord && (
+          <div className="end-game-answer">
+            A palavra era{" "}
+            <span className="end-game-answer-word">{gameWord.toUpperCase()}</span>
+          </div>
+        )}
 
         <div className="end-game-stats">
           <Stat value={stats.games} label="jogos" />

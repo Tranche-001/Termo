@@ -17,11 +17,15 @@ export const useModalContext = () => useContext(ModalContext);
 interface EndGameContextValue {
   isEndGameModalOpen: EndGame;
   setIsEndGameModalOpen: Dispatch<SetStateAction<EndGame>>;
+  gameWord: string;
+  setGameWord: Dispatch<SetStateAction<string>>;
 }
 
 export const EndGameContext = createContext<EndGameContextValue>({
   isEndGameModalOpen: [false, "", 0],
   setIsEndGameModalOpen: () => {},
+  gameWord: "",
+  setGameWord: () => {},
 });
 
 export const useEndGameContext = () => useContext(EndGameContext);

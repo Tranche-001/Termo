@@ -8,8 +8,12 @@ import { NUM_OF_ROWS, WORD_SIZE } from "./constants";
 
 export const GameScreen: React.FC = () => {
   const { setIsInvalidWordModalOpen } = useModalContext();
-  const { isEndGameModalOpen, setIsEndGameModalOpen } = useEndGameContext();
+  const { isEndGameModalOpen, setIsEndGameModalOpen, setGameWord } = useEndGameContext();
   const { gameWord, isWordInDictionary } = useGameWord();
+
+  useEffect(() => {
+    if (gameWord) setGameWord(gameWord);
+  }, [gameWord, setGameWord]);
 
   const [rowStatus, setRowStatus] = useState<string[]>(() => {
     const initial = Array(NUM_OF_ROWS).fill("deactivated");

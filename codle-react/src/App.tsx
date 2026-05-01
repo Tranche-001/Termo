@@ -13,6 +13,7 @@ function App() {
   const [isInvalidWordModalOpen, setIsInvalidWordModalOpen] = useState<boolean>(false);
   const [isEndGameModalOpen, setIsEndGameModalOpen] = useState<EndGame>([false, "", 0]);
   const [tryAgainKey, setTryAgainKey] = useState<number>(0);
+  const [gameWord, setGameWord] = useState<string>("");
 
   const handleReload = () => {
     setIsEndGameModalOpen([false, "", 0]);
@@ -41,17 +42,17 @@ function App() {
 
       <InvalidWordModal isInvalidWordModalOpen={isInvalidWordModalOpen} />
 
-      <EndGameContext.Provider value={{ isEndGameModalOpen, setIsEndGameModalOpen }}>
+      <EndGameContext.Provider value={{ isEndGameModalOpen, setIsEndGameModalOpen, gameWord, setGameWord }}>
         <ModalContext.Provider value={{ isInvalidWordModalOpen, setIsInvalidWordModalOpen }}>
           <GameScreen key={tryAgainKey} />
         </ModalContext.Provider>
-      </EndGameContext.Provider>
 
-      <EndGameScreen
-        isEndGameModalOpen={isEndGameModalOpen}
-        setTryAgainKey={setTryAgainKey}
-        setIsEndGameModalOpen={setIsEndGameModalOpen}
-      />
+        <EndGameScreen
+          isEndGameModalOpen={isEndGameModalOpen}
+          setTryAgainKey={setTryAgainKey}
+          setIsEndGameModalOpen={setIsEndGameModalOpen}
+        />
+      </EndGameContext.Provider>
     </div>
   );
 }
