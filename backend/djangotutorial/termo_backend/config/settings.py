@@ -67,7 +67,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django_mongodb_backend',
         'HOST': os.getenv('MONGO_URI'),
-        'NAME': 'termo',
+        'NAME': 'quickstart',
     },
 }
 
