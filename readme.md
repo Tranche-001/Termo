@@ -1,50 +1,100 @@
-O Jogo pode ser acessado aqui:  https://termo-7n23.onrender.com
+# Codle
 
-## 1. O Codle:
+> A Portuguese Wordle clone — guess the 5-letter word in up to 6 tries.
 
-O **Codle** é uma releitura do clássico jogo de palavras “Termo”/“Wordle”, em que o usuário tenta adivinhar uma palavra de 5 letras em até 6 tentativas.  
+🎮 **[Play it here →](https://termo-7n23.onrender.com)**
 
-![image](https://github.com/user-attachments/assets/d7413b10-44e4-480b-b2f9-8688a00630b9)
-
-
-Missão neste projeto é **desenvolver uma interface web que recrie a experiência de um jogo de palavras no estilo "Termo" ou "Wordle"**. Se ainda não sabe do que se trata: [Termo.ooo](https://term.ooo/).
+![Codle screenshot](https://github.com/user-attachments/assets/d7413b10-44e4-480b-b2f9-8688a00630b9)
 
 ---
-## 2. Requisitos e funcionalidades
 
-Interface interativa com as seguintes funcionalidades:
+## What is it?
 
-| Item | Descrição                                                                            | Status |
-| ---- | ------------------------------------------------------------------------------------ | ------ |
-| 1    | Campo de entrada ou captura de teclas para as tentativas                             | ☑      |
-| 2    | Cálculo de feedback por letra (posição certa, letra certa local errada, inexistente) | ☑      |
-| 3    | Gerenciar o número de tentativas disponíveis.                                        | ☑      |
-| 4    | Controle de 6 linhas de tentativa.                                                   | ☑      |
-| 5    | Mecanismo para detectar vitória ou derrota.                                          | ☑      |
-| 6    | Possibilidade de começar um novo jogo com uma nova palavra aleatória                 | ☑      |
-*(usado como base durante o desenvolvimento)*
+Codle is a web remake of [Termo](https://term.ooo/) / Wordle. You have 6 attempts to guess a hidden 5-letter Portuguese word. After each guess, each letter is highlighted to show how close you are:
 
-## 3. Aprendizado
-- UseState
-- UseEffect
-- Typescript
-- Django
-- Docker/Docker Compose
-- GithubActions CI/CD
-- Deploy on OnRender
-- Claude
+- 🟩 **Green** — correct letter, correct position
+- 🟨 **Yellow** — correct letter, wrong position
+- ⬛ **Gray** — letter not in the word
 
-## 4. Developing com Docker
-- acesse ou o codle-react(front) ou o backend
-- use 'docker compose -f docker-compose.dev.yaml up'
+New game, new word. Simple as that.
 
-## 5. Inicializando com Docker Localmente
-- use 'docker compose up' to initialize.
+---
 
-# OBS:
-- Primeiro tera que setar as envs necessárias
-- UID/GID serve para lidar com permissões entre sua máquina e o DOCKER
-  - Se estiver com problemas para manipular arquivos do container que estão conversando
-  - com seus arquivos locais através dos volumes, rode sudo chown -R $USER:$USER .
-- MONGO_URI para o backend conectar com seu banco de dados Mongo.
-- Após isso rode 'docker compose up' na página local.
+## Stack
+
+| Layer    | Tech                        |
+|----------|-----------------------------|
+| Frontend | React + TypeScript          |
+| Backend  | Django (Python)             |
+| Database | MongoDB                     |
+| Infra    | Docker / Docker Compose     |
+| CI/CD    | GitHub Actions + Render     |
+
+---
+
+## Running locally
+
+### Prerequisites
+
+- Docker and Docker Compose installed
+- A MongoDB connection string
+
+### 1. Set environment variables
+
+Create a `.env` file (or export the variables) before running anything:
+
+```env
+# Your user/group ID — avoids file permission issues between host and container
+UID=1000
+GID=1000
+
+# MongoDB connection string for the backend
+MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/<db>
+```
+
+> **Permission issues?** If you can't edit files mounted from the container, run:
+> ```bash
+> sudo chown -R $USER:$USER .
+> ```
+
+### 2. Start the app
+
+```bash
+# Production mode
+docker compose up
+
+# Development mode (with hot reload)
+# Run from the frontend or backend directory:
+docker compose -f docker-compose.dev.yaml up
+```
+
+The app will be available at `http://localhost:3000` (or whichever port is configured).
+
+---
+
+## Features
+
+| # | Feature | Status |
+|---|---------|--------|
+| 1 | Keyboard input capture | ✅ |
+| 2 | Per-letter feedback (correct / misplaced / absent) | ✅ |
+| 3 | 6-attempt limit | ✅ |
+| 4 | Win / loss detection | ✅ |
+| 5 | New game with a random word | ✅ |
+
+---
+
+## What I learned building this
+
+- React `useState` and `useEffect`
+- TypeScript in a React project
+- Django REST API
+- Docker & Docker Compose (dev vs. prod configs)
+- GitHub Actions for CI/CD
+- Deploying to Render
+
+---
+
+## License
+
+MIT
